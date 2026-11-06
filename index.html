@@ -151,6 +151,25 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 110px}
 .cal-d.sel .n{box-shadow:inset 0 0 0 1.5px var(--accent)}
 .cal-d.sel.today .n{box-shadow:none}
 .cal-d.sel{box-shadow:none}
+
+/* v5 inline editor */
+.efwrap{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .28s cubic-bezier(.4,0,.2,1),visibility 0s .28s}
+.efwrap.open{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .28s cubic-bezier(.4,0,.2,1),visibility 0s}
+.efin{overflow:hidden;min-height:0}
+.efwrap.solo{background:var(--card);border-radius:8px;margin-top:12px}
+.ef{padding:12px 18px 14px}
+.lines .ef{padding:6px 6px 14px}
+.amtl{display:flex;align-items:baseline;gap:4px;border-bottom:1px solid var(--sep);padding:4px 0 4px;margin:0}
+.amtl input{border:0;background:none;outline:none;font-size:30px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;padding:0;min-width:0;width:1.3ch;border-radius:0}
+.amtl span{font-size:18px;font-weight:600;color:var(--mute)}
+.ln{display:block;width:100%;border:0;border-bottom:1px solid var(--sep);background:none;border-radius:0;padding:11px 0;outline:none;font-size:16px;min-height:44px;-webkit-appearance:none;appearance:none;text-align:left}
+.ln::-webkit-date-and-time-value{text-align:left}
+.ef .chips{margin-top:14px}
+.ef .chip{background:var(--fill)}
+.ef .chip.on{background:var(--k,var(--accent));color:#1c1c1e;font-weight:600}
+.ef .btn{background:var(--fill)}
+.ef .btn.pri{background:var(--accent);color:var(--on-accent)}
+@media (prefers-reduced-motion:reduce){.efwrap,.efwrap.open{transition:none}}
 </style>
 </head>
 <body>
@@ -170,14 +189,13 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 110px}
 
 <div class="scrim" id="scrim"></div>
 
-<section class="sheet" id="entrySheet" aria-label="Entry">
-  <div class="sh-h"><h2 id="shTitle">新規記録</h2><button class="ib" data-close aria-label="閉じる"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-  <div class="amt"><span>¥</span><input id="fAmt" inputmode="decimal" autocomplete="off" placeholder="0"></div>
-  <label class="fld"><span>内容</span><input id="fNote" autocomplete="off" placeholder="ランチ、電車、本…"></label>
+<div id="efStore" hidden><div class="ef" id="ef">
+  <label class="amtl"><input id="fAmt" inputmode="decimal" autocomplete="off" placeholder="0"><span>¥</span></label>
+  <input class="ln" id="fNote" autocomplete="off" placeholder="ランチ、電車、本…">
+  <input class="ln" id="fDate" type="date">
   <div class="chips" id="fCats"></div>
-  <label class="fld"><span>日付</span><input id="fDate" type="date"></label>
   <div class="acts"><button class="btn del" id="fDel" hidden>削除</button><button class="btn pri" id="fSave">保存</button></div>
-</section>
+</div></div>
 
 <section class="sheet" id="setSheet" aria-label="設定">
   <div class="sh-h"><h2>GitHub 同期</h2><button class="ib" data-close aria-label="閉じる"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
@@ -249,6 +267,7 @@ function calHtml(all){
   return h + '</div></div>';
 }
 function render(){
+  $('#efStore').appendChild($('#ef'));
   $('#label').textContent = ymLabel(ym);
   $('#next').disabled = ym >= today().slice(0, 7);
   const all = Object.values(entries).filter(e => e.d.startsWith(ym));
@@ -265,6 +284,8 @@ function render(){
   const list = all.filter(e => (!filterCat || e.c === filterCat) && (!filterDay || e.d === filterDay)).sort((a, b) => b.d.localeCompare(a.d) || (b.u || 0) - (a.u || 0));
   if (filterCat || filterDay) h += `<div class="fbar">表示中：${esc([filterCat ? catLabel(filterCat) : '', filterDay ? dayShort(filterDay) : ''].filter(Boolean).join(' · '))}<button id="clr">すべて表示</button></div>`;
   if (!list.length) h += `<div class="empty">${all.length ? '該当する記録はありません。' : 'この月の記録はありません。<br>＋で追加できます。'}</div>`;
+  if (openId && openId !== 'new' && !list.some(x => x.id === openId)){ openId = null; efReady = false; efClosing = false; }
+  if (openId === 'new') h += efSlot(true);
   let cur = '', open = false;
   const dayTot = {}; list.forEach(e => { dayTot[e.d] = (dayTot[e.d] || 0) + e.a; });
   list.forEach(e => {
@@ -273,18 +294,25 @@ function render(){
       cur = e.d; open = true;
       h += `<div class="day"><span>${esc(dayLabel(e.d))}</span><b>${fmt(dayTot[e.d])}</b></div><div class="lines">`;
     }
-    h += `<button class="lrow" data-id="${esc(e.id)}"><span class="t"><i class="kd sup k-${esc(e.c)}"></i>${(() => { const [it, sh] = splitNote(e.n || catLabel(e.c)); return esc(it) + (sh ? ` <code class="shop">${esc(sh)}</code>` : ''); })()}</span><span class="a">${fmt(e.a)}</span></button>`;
+    h += `<button class="lrow" data-id="${esc(e.id)}"><span class="t"><i class="kd sup k-${esc(e.c)}"></i>${(() => { const [it, sh] = splitNote(e.n || catLabel(e.c)); return esc(it) + (sh ? ` <code class="shop">${esc(sh)}</code>` : ''); })()}</span><span class="a">${fmt(e.a)}</span></button>` + (openId === e.id ? efSlot(false) : '');
   });
   if (open) h += '</div>';
   $('#main').innerHTML = h;
+  const slot = $('#efSlot');
+  if (slot){
+    slot.firstChild.appendChild($('#ef'));
+    if (!efReady){ efReady = true; requestAnimationFrame(() => requestAnimationFrame(() => { slot.classList.add('open'); if (efFocus){ efFocus = false; $('#fAmt').focus({preventScroll: true}); } })); }
+  }
 }
+let openId = null, efReady = false, efFocus = false, efClosing = false;
+const efSlot = solo => `<div class="efwrap${solo ? ' solo' : ''}${efReady && !efClosing ? ' open' : ''}" id="efSlot"><div class="efin"></div></div>`;
 $('#main').addEventListener('click', e => {
   if (e.target.closest('#clrdemo')){ Object.keys(entries).forEach(id => { if (isDemo(id)) delete entries[id]; }); render(); return; }
   if (e.target.closest('#calTgl')){ calOpen = !calOpen; LS.set('calOpen', calOpen); $('#calWrap').classList.toggle('open', calOpen); $('.calbar').classList.toggle('open', calOpen); const tg = $('#calTgl'); tg.setAttribute('aria-expanded', calOpen); tg.setAttribute('aria-label', calOpen ? 'カレンダーを隠す' : 'カレンダーを表示'); return; }
   const cr = e.target.closest('.catr'); if (cr){ filterCat = filterCat === cr.dataset.cat ? null : cr.dataset.cat; render(); return; }
   if (e.target.closest('#clr')){ filterCat = null; filterDay = null; render(); return; }
   const cd = e.target.closest('.cal-d'); if (cd && cd.dataset.day){ filterDay = filterDay === cd.dataset.day ? null : cd.dataset.day; render(); return; }
-  const r = e.target.closest('.lrow'); if (r) openEntry(r.dataset.id);
+  const r = e.target.closest('.lrow'); if (r){ if (openId === r.dataset.id) closeEntry(true); else openEntry(r.dataset.id); }
 });
 function shiftMonth(k){
   const [y, m] = ym.split('-').map(Number), dt = new Date(y, m - 1 + k, 1);
@@ -300,11 +328,11 @@ function showSheet(el){ scrim.classList.add('on'); el.classList.add('on'); $('#f
 function closeSheets(){ $('#fab').style.opacity = ''; document.querySelectorAll('.sheet').forEach(s => s.classList.remove('on')); scrim.classList.remove('on'); document.activeElement && document.activeElement.blur && document.activeElement.blur(); }
 scrim.addEventListener('click', closeSheets);
 document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', closeSheets));
-addEventListener('keydown', e => { if (e.key === 'Escape') closeSheets(); });
+addEventListener('keydown', e => { if (e.key === 'Escape'){ closeSheets(); closeEntry(true); } });
 
 function paintCats(){
   const list = pickedCat && !CATS.includes(pickedCat) ? CATS.concat(pickedCat) : CATS;
-  $('#fCats').innerHTML = list.map(c => `<button type="button" class="chip${pickedCat === c ? ' on' : ''}" data-c="${esc(c)}">${esc(catLabel(c))}</button>`).join('');
+  $('#fCats').innerHTML = list.map(c => `<button type="button" class="chip k-${esc(c)}${pickedCat === c ? ' on' : ''}" data-c="${esc(c)}">${esc(catLabel(c))}</button>`).join('');
 }
 $('#fCats').addEventListener('click', e => {
   const b = e.target.closest('.chip'); if (!b) return;
@@ -315,19 +343,27 @@ $('#fNote').addEventListener('input', () => {
   const g = guessCat($('#fNote').value);
   if (g !== pickedCat){ pickedCat = g; paintCats(); }
 });
+const sizeAmt = () => { const i = $('#fAmt'); i.style.width = (Math.max(1, i.value.length) + .3) + 'ch'; };
+$('#fAmt').addEventListener('input', sizeAmt);
 function openEntry(id){
+  if (efClosing) return;
   editId = id || null; delArmed = false;
   const e = id ? entries[id] : null;
-  $('#shTitle').textContent = e ? '記録を編集' : '新規記録';
   $('#fAmt').value = e ? String(e.a) : '';
   $('#fNote').value = e ? e.n : '';
   $('#fDate').value = e ? e.d : today();
-  pickedCat = e ? e.c : ''; catTouched = !!e; paintCats();
+  pickedCat = e ? e.c : ''; catTouched = !!e; paintCats(); sizeAmt();
   $('#fDel').hidden = !e; $('#fDel').textContent = '削除';
-  showSheet($('#entrySheet'));
-  if (!e) setTimeout(() => $('#fAmt').focus(), 280);
+  openId = id || 'new'; efReady = false; efClosing = false; efFocus = !e;
+  render();
+  if (!e) setTimeout(() => { const s = $('#efSlot'); s && s.scrollIntoView({block: 'nearest', behavior: 'smooth'}); }, 60);
 }
-$('#fab').addEventListener('click', () => openEntry(null));
+function closeEntry(anim){
+  if (!openId || efClosing) return;
+  const s = $('#efSlot'), fin = () => { openId = null; efReady = false; efClosing = false; render(); };
+  if (anim && s){ efClosing = true; s.classList.remove('open'); document.activeElement && document.activeElement.blur && document.activeElement.blur(); setTimeout(fin, 300); } else fin();
+}
+$('#fab').addEventListener('click', () => { if (openId === 'new') closeEntry(true); else openEntry(null); });
 function saveEntry(){
   const a = Number(String($('#fAmt').value).replace(/[,\s¥]/g, ''));
   if (!isFinite(a) || a <= 0){ $('#fAmt').focus(); return; }
@@ -336,7 +372,7 @@ function saveEntry(){
   entries[id] = {id, a: Math.round(a * 100) / 100, n: $('#fNote').value.trim(), c: pickedCat || 'Other', d, u: Date.now()};
   delete del[id];
   if (!d.startsWith(ym)){ ym = d.slice(0, 7); LS.set('ym', ym); }
-  persist(); closeSheets(); render(); markDirty();
+  persist(); openId = null; efReady = false; efClosing = false; render(); markDirty();
 }
 $('#fSave').addEventListener('click', saveEntry);
 $('#fNote').addEventListener('keydown', e => { if (e.key === 'Enter') saveEntry(); });
@@ -345,7 +381,7 @@ $('#fDel').addEventListener('click', () => {
   if (!editId) return;
   if (!delArmed){ delArmed = true; $('#fDel').textContent = 'もう一度タップで削除'; return; }
   delete entries[editId]; del[editId] = Date.now();
-  persist(); closeSheets(); render(); markDirty();
+  persist(); openId = null; efReady = false; efClosing = false; render(); markDirty();
 });
 function persist(){ LS.set('entries', entries); LS.set('del', del); }
 
