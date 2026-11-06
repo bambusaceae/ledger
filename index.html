@@ -320,6 +320,18 @@ main{padding-inline:16px}
 .lrow .a,.inl-amt{font-weight:400}
 .day{margin:24px 0 8px;padding:0 4px 0 0;font-size:17px;font-weight:700;color:var(--ink);align-items:baseline}
 .day b{font-size:15px;font-weight:500;color:var(--mute)}
+
+/* v13 calendar as a full-width white band (Apple Calendar style) */
+body{overflow-x:clip}
+.calwrap{background:none;border-radius:0;width:100vw;margin:6px 0 0 calc(50% - 50vw)}
+.calwrap .cal,.cal{padding:0;margin:0}
+.cal-h{display:grid;grid-template-columns:repeat(7,1fr);padding:8px 0 6px}
+.cal-h span{padding:0;text-align:center;font-size:12.5px;font-weight:700;color:var(--ink)}
+.cal-g{background:var(--grp);border-top:.5px solid var(--sep);border-bottom:.5px solid var(--sep);padding:0}
+.cal-g .cal-d{min-height:46px;padding-top:4px;border-radius:0}
+.cal-g .cal-d:nth-child(n+8){background-image:linear-gradient(var(--sep-l),var(--sep-l));background-size:100% .5px;background-repeat:no-repeat}
+.cal-d:nth-child(7n+1) .n,.cal-d:nth-child(7n) .n{color:var(--mute)}
+.cal-d.today .n{color:#fff}
 </style>
 </head>
 <body>
@@ -417,9 +429,9 @@ let calOpen = LS.get('calOpen', true) !== false;
 const amtShort = n => '¥' + (n >= 100000 ? Math.round(n / 1000) + 'k' : n.toLocaleString('en-US', {maximumFractionDigits: 0}));
 
 function calHtml(all){
-  const [cy, cm] = ym.split('-').map(Number), lead = (new Date(cy, cm - 1, 1).getDay() + 6) % 7, dim = new Date(cy, cm, 0).getDate(), tdy = today();
+  const [cy, cm] = ym.split('-').map(Number), lead = new Date(cy, cm - 1, 1).getDay(), dim = new Date(cy, cm, 0).getDate(), tdy = today();
   const dsum = {}; all.forEach(e => { dsum[e.d] = (dsum[e.d] || 0) + e.a; });
-  let h = '<div class="cal"><div class="cal-h">' + ['月', '火', '水', '木', '金', '土', '日'].map(x => `<span>${x}</span>`).join('') + '</div><div class="cal-g">';
+  let h = '<div class="cal"><div class="cal-h">' + ['日', '月', '火', '水', '木', '金', '土'].map(x => `<span>${x}</span>`).join('') + '</div><div class="cal-g">';
   for (let i = 0; i < lead; i++) h += '<span class="cal-d blank"></span>';
   for (let dn = 1; dn <= dim; dn++){
     const key = `${ym}-${pad(dn)}`, v = dsum[key];
