@@ -350,6 +350,9 @@ body{overflow-x:clip}
 :root[data-theme="dark"] .cal-g{background:var(--bg)}
 .inl,.inl:focus,.inl:focus-visible{box-shadow:none;border-radius:0;outline:none}
 .inl-shop,.inl-shop:focus,.inl-shop:focus-visible{border-radius:5px}
+/* v17 row height = Files list (38pt) */
+.lrow{padding:8px 6px 7.5px}
+.lrow .t,.lrow .a{line-height:22px}
 </style>
 </head>
 <body>
@@ -754,7 +757,12 @@ const isDirty = () => +LS.get('dirty', 0) > 0;
 function paintDot(){ $('#dot').classList.toggle('on', !sOn() || isDirty()); }
 function markDirty(){ LS.set('dirty', Date.now()); paintDot(); clearTimeout(syncT); syncT = setTimeout(sync, 1200); }
 
+let pendingRender = false;
+const typingNow = () => { const a = document.activeElement; return !!(a && a.matches && a.matches('input') && (a.closest('#main') || a.closest('#ef'))); };
+function requestRender(){ if (typingNow() || inlActive){ pendingRender = true; return; } pendingRender = false; render(); }
+document.addEventListener('focusout', () => setTimeout(() => { if (pendingRender && !typingNow() && !inlActive && !popEl){ pendingRender = false; render(); } }, 300));
 function mergeRemote(R){
+  const before = JSON.stringify([entries, del]);
   const re = {}; Object.keys(R.entries || {}).forEach(id => { const c = cleanEntry(id, R.entries[id]); if (c) re[id] = c; });
   const rd = R.del || {};
   new Set([...Object.keys(entries), ...Object.keys(del), ...Object.keys(re), ...Object.keys(rd)]).forEach(id => {
@@ -765,7 +773,7 @@ function mergeRemote(R){
     if (best === rt && r){ entries[id] = Object.assign({}, r); delete del[id]; return; }
     delete entries[id]; del[id] = best;                                       // a deletion is newest
   });
-  persist(); render();
+  if (JSON.stringify([entries, del]) !== before){ persist(); requestRender(); }
 }
 function ghFetch(path, opts = {}){
   return fetch(`https://api.github.com/repos/${ghRepo()}/contents/${path}`, Object.assign({}, opts, {cache: 'no-store',
