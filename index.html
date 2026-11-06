@@ -67,14 +67,14 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 110px}
 .catr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:6px 8px;border-radius:8px;text-align:left;transition:background-color .15s ease}
 .catr .nm{font-size:14px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .catr .am{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.catr.sel{background:var(--tint)}
+.catr.sel{background:transparent;box-shadow:inset 0 0 0 1px var(--k,var(--accent))}
 .catr.sel .nm{color:var(--ink);font-weight:600}
 .calbar{display:flex;justify-content:center;margin-top:2px}
 .calbar button{width:46px;height:26px;border-radius:13px;display:grid;place-items:center;color:var(--mute);transition:background-color .15s ease}
 .calbar svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s ease}
 .calbar.open svg{transform:rotate(180deg)}
 /* restrained styling */
-.k-Eating{--k:#E8943A}.k-Drinking{--k:#3FA7B8}.k-Transport{--k:#7B78D8}.k-Goods{--k:#D9628A}.k-Medical{--k:#4DAA67}.k-Groceries{--k:#A08462}.k-Other{--k:#9A9AA0}
+.k-Eating{--k:#E8943A}.k-Drinking{--k:#C9A47E}.k-Transport{--k:#4A8FE7}.k-Goods{--k:#D9628A}.k-Medical{--k:#7DC48B}.k-Groceries{--k:#CF6B4F}.k-Other{--k:#9A9AA0}
 .kd{flex:none;display:block;width:8px;height:8px;border-radius:50%;background:var(--k,#9A9AA0)}
 .lines{display:block;background:var(--card);border-radius:8px;padding:2px 12px;overflow:hidden}
 .lrow:last-child{border-bottom:0}
@@ -90,8 +90,8 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 110px}
 .calwrap.open{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .3s cubic-bezier(.4,0,.2,1),visibility 0s}
 .calin{overflow:hidden;min-height:0}
 @media (prefers-reduced-motion:reduce){.calwrap,.calwrap.open{transition:none}}
-.lrow{display:grid;grid-template-columns:8px minmax(0,1fr) auto;gap:10px;align-items:start;width:100%;text-align:left;padding:9px 6px;border-bottom:.5px solid var(--sep);transition:background-color .15s ease}
-.lrow .kd{margin-top:7px}
+.lrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;text-align:left;padding:9px 6px;border-bottom:.5px solid var(--sep);transition:background-color .15s ease}
+.kd.sup{display:inline-block;width:6px;height:6px;margin-left:3px;position:relative;top:-.55em}
 .lrow .t{font-size:15px;overflow-wrap:anywhere}
 .lrow .s{font-size:12px;color:var(--mute)}
 .lrow .a{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -241,7 +241,7 @@ function render(){
   let h = '';
   if (all.some(e => isDemo(e.id))) h += '<div class="fbar" style="margin-top:0">サンプルデータ<button id="clrdemo">サンプルを消す</button></div>';
   if (catList.length) h += '<div class="cats2">' + catList.map(c =>
-    `<button class="catr${filterCat === c ? ' sel' : ''}" data-cat="${esc(c)}">${kdot(c)}<span class="nm">${esc(catLabel(c))}</span><span class="am">${fmt(by[c])}</span></button>`).join('') + '</div>';
+    `<button class="catr k-${esc(c)}${filterCat === c ? ' sel' : ''}" data-cat="${esc(c)}">${kdot(c)}<span class="nm">${esc(catLabel(c))}</span><span class="am">${fmt(by[c])}</span></button>`).join('') + '</div>';
   h += `<div class="calbar${calOpen ? ' open' : ''}"><button id="calTgl" aria-label="${calOpen ? 'カレンダーを隠す' : 'カレンダーを表示'}" aria-expanded="${calOpen}"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div>`;
   h += `<div class="calwrap${calOpen ? ' open' : ''}" id="calWrap"><div class="calin">${calHtml(all)}</div></div>`;
   const list = all.filter(e => (!filterCat || e.c === filterCat) && (!filterDay || e.d === filterDay)).sort((a, b) => b.d.localeCompare(a.d) || (b.u || 0) - (a.u || 0));
@@ -255,7 +255,7 @@ function render(){
       cur = e.d; open = true;
       h += `<div class="day"><span>${esc(dayLabel(e.d))}</span><b>${fmt(dayTot[e.d])}</b></div><div class="lines">`;
     }
-    h += `<button class="lrow" data-id="${esc(e.id)}">${kdot(e.c)}<span><div class="t">${esc(e.n || catLabel(e.c))}</div>${e.n ? `<div class="s">${esc(catLabel(e.c))}</div>` : ''}</span><span class="a">${fmt(e.a)}</span></button>`;
+    h += `<button class="lrow" data-id="${esc(e.id)}"><span class="t">${esc(e.n || catLabel(e.c))}<i class="kd sup k-${esc(e.c)}"></i></span><span class="a">${fmt(e.a)}</span></button>`;
   });
   if (open) h += '</div>';
   $('#main').innerHTML = h;
