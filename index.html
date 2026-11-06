@@ -301,14 +301,33 @@ main{padding-top:6px}
 .dot{background:var(--accent);box-shadow:0 0 0 2px var(--bg)}
 .sheet .fld input{background:var(--bg)}
 .inl{box-shadow:inset 0 -1px 0 var(--accent)}
+
+/* v12 */
+.trash{color:rgba(255,255,255,var(--p,1));padding-left:16px}
+.lrow.sw{will-change:transform}
+.ttlwrap{padding-inline:16px}
+.ttl{padding:0 2px;font-weight:800;letter-spacing:-.04em}
+.ttlrow{display:flex;align-items:center}
+.ttlrow .ib{color:var(--ink);width:34px;height:34px;margin-top:4px}
+.ttlrow .ib:first-of-type{margin-left:8px}
+main{padding-inline:16px}
+.lines{padding:0 8px}
+.lines .efwrap{margin-inline:-8px}
+.ef,.lines .ef{padding-inline:14px}
+.cats2{padding-inline:4px}
+.cal,.calwrap .cal{padding-inline:14px}
+.fbar{margin-inline:0}
+.lrow .a,.inl-amt{font-weight:400}
+.day{margin:24px 0 8px;padding:0 4px 0 0;font-size:17px;font-weight:700;color:var(--ink);align-items:baseline}
+.day b{font-size:15px;font-weight:500;color:var(--mute)}
 </style>
 </head>
 <body>
 <header class="top"><div class="top-in">
-  <div class="hl"><button class="ib" id="prev" aria-label="前の月"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><button class="ib" id="next" aria-label="次の月"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>
+  <div class="hl"></div>
   <div class="hb"><button class="ib" id="syncBtn" aria-label="今すぐ同期"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></svg><i class="dot" id="dot"></i></button><button class="ib" id="setBtn" aria-label="設定"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></div>
 </div></header>
-<div class="ttlwrap"><h1 class="ttl" id="label"></h1></div>
+<div class="ttlwrap"><div class="ttlrow"><h1 class="ttl" id="label"></h1><button class="ib" id="prev" aria-label="前の月"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><button class="ib" id="next" aria-label="次の月"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div></div>
 
 <main id="main"></main>
 
@@ -382,7 +401,7 @@ if (!/^\d{4}-\d{2}$/.test(ym)) ym = today().slice(0, 7);
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 const fmt = n => '¥' + Number(n).toLocaleString('en-US', {maximumFractionDigits: 2});
-const ymLabel = s => `${s.slice(0, 4)}.${s.slice(5)}`;
+const ymLabel = s => `${s.slice(0, 4)}/${s.slice(5)}`;
 const WD = ['日', '月', '火', '水', '木', '金', '土'];
 const dayShort = d => { const [y, m, dd] = d.split('-').map(Number); return `${m}月${dd}日(${WD[new Date(y, m - 1, dd).getDay()]})`; };
 function dayLabel(d){
@@ -601,36 +620,43 @@ document.addEventListener('click', ev => {
     closePop();
   }
 });
-function swSet(r, x, anim){ r.style.transition = anim ? 'transform .24s cubic-bezier(.2,.8,.3,1)' : 'none'; r.style.transform = x ? `translateX(${x}px)` : ''; r.dataset.sx = x; }
-function swClose(){ const r = swOpen; if (!r) return; swOpen = null; swSet(r, 0, true); setTimeout(() => { if (r.dataset.sx === '0'){ r.classList.remove('sw'); r.style.transition = ''; } }, 260); }
+const SW_OPEN = 53;
+function swSet(r, x, anim){ r.style.transition = anim ? 'transform .36s cubic-bezier(.22,1,.36,1)' : 'none'; r.style.transform = x ? `translateX(${x}px)` : ''; r.dataset.sx = x; r.style.setProperty('--p', Math.min(1, Math.abs(x) / SW_OPEN).toFixed(2)); }
+function swDone(r){ setTimeout(() => { if (r.dataset.sx === '0'){ r.classList.remove('sw'); r.style.transition = ''; } }, 400); }
+function swClose(){ const r = swOpen; if (!r) return; swOpen = null; swSet(r, 0, true); swDone(r); }
 addEventListener('scroll', swClose, {passive: true});
 (function(){
-  const main = $('#main'), OPEN = 80;
-  let r = null, sx = 0, sy = 0, base = 0, mode = null, cur = 0;
+  const main = $('#main');
+  let r = null, sx = 0, sy = 0, base = 0, mode = null, cur = 0, smp = [];
   main.addEventListener('pointerdown', ev => {
     if (swOpen && !(swOpen.contains(ev.target) && ev.target.closest('.trash'))){ if (swOpen.contains(ev.target)) swSuppress = Date.now(); swClose(); }
     r = ev.target.closest('.lrow');
     if (!r || ev.target.closest('.inl') || ev.target.closest('.trash') || (ev.pointerType === 'mouse' && ev.button !== 0)){ r = null; return; }
-    sx = ev.clientX; sy = ev.clientY; mode = null; base = Number(r.dataset.sx || 0); cur = base;
+    sx = ev.clientX; sy = ev.clientY; mode = null; base = Number(r.dataset.sx || 0); cur = base; smp = [];
   });
   main.addEventListener('pointermove', ev => {
     if (!r) return;
     const dx = ev.clientX - sx, dy = ev.clientY - sy;
     if (!mode){
-      if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)){ mode = 'h'; r.classList.add('sw'); try { r.setPointerCapture(ev.pointerId); } catch (_) {} }
+      if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)){ mode = 'h'; sx = ev.clientX; r.classList.add('sw'); try { r.setPointerCapture(ev.pointerId); } catch (_) {} }
       else if (Math.abs(dy) > 8){ mode = 'v'; }
+      return;
     }
     if (mode === 'h'){
-      let x = Math.min(0, base + dx); const a = Math.abs(x), sg = -1;
-      if (a > OPEN) x = sg * Math.min(OPEN + (a - OPEN) * .25, OPEN + 14);
+      let x = Math.min(0, base + (ev.clientX - sx));
+      const over = -x - SW_OPEN;
+      if (over > 0) x = -(SW_OPEN + 56 * (1 - Math.exp(-over / 80)));
       cur = x; swSet(r, x, false);
+      smp.push({t: performance.now(), x: ev.clientX}); if (smp.length > 6) smp.shift();
     }
   });
   const end = () => {
     if (r && mode === 'h'){
       swSuppress = Date.now();
-      if (Math.abs(cur) > 36){ swOpen = r; swSet(r, -OPEN, true); }
-      else { if (swOpen === r) swOpen = null; swSet(r, 0, true); const rr = r; setTimeout(() => { if (rr.dataset.sx === '0'){ rr.classList.remove('sw'); rr.style.transition = ''; } }, 260); }
+      let v = 0; if (smp.length > 1){ const a = smp[0], b = smp[smp.length - 1]; if (b.t - a.t > 0 && performance.now() - b.t < 120) v = (b.x - a.x) / (b.t - a.t); }
+      const open = Math.abs(v) > .3 ? v < 0 : -cur > SW_OPEN / 2;
+      if (open){ swOpen = r; swSet(r, -SW_OPEN, true); }
+      else { if (swOpen === r) swOpen = null; swSet(r, 0, true); swDone(r); }
     }
     r = null; mode = null;
   };
