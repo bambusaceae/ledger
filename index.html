@@ -353,6 +353,7 @@ body{overflow-x:clip}
 /* v17 row height = Files list (38pt) */
 .lrow{padding:8px 6px 7.5px}
 .lrow .t,.lrow .a{line-height:22px}
+.ver{font-size:12px;font-weight:500;color:var(--mute);margin-left:6px}
 </style>
 </head>
 <body>
@@ -382,13 +383,13 @@ body{overflow-x:clip}
 </div></div>
 
 <section class="sheet" id="setSheet" aria-label="設定">
-  <div class="sh-h"><h2>GitHub 同期</h2><button class="ib" data-close aria-label="閉じる"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sh-h"><h2>GitHub 同期 <small class="ver">v39</small></h2><button class="ib" data-close aria-label="閉じる"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <label class="fld"><span>リポジトリ</span><input id="srepo" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="owner/repo"></label>
   <label class="fld"><span>トークン</span><input id="stoken" type="password" autocomplete="off" placeholder="fine-grained トークンを貼り付け"></label>
   <div class="acts"><button class="btn pri" id="ssave">保存して同期</button><button class="btn" id="syncNow">今すぐ同期</button></div>
   <div class="note-s" id="syncNote"></div>
   <p class="hint">記録はまずこの端末に保存され、リポジトリの data.json と同期されます。オンラインに戻ったときにも同期されます。</p>
-  <p class="hint" id="verLine">バージョン v38 · 2026-11-07</p>
+  <p class="hint" id="verLine">バージョン v39 · 2026-11-07</p>
 </section>
 
 <script>
