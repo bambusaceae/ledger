@@ -170,6 +170,19 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 110px}
 .ef .btn{background:var(--fill)}
 .ef .btn.pri{background:var(--accent);color:var(--on-accent)}
 @media (prefers-reduced-motion:reduce){.efwrap,.efwrap.open{transition:none}}
+
+/* v6 compact auto-saving editor */
+.ef{font-size:13.5px;padding:10px 18px 12px}
+.lines .ef{padding:4px 6px 12px}
+.eftop{display:flex;align-items:flex-end;gap:12px}
+.eftop .amtl{flex:1;min-width:0}
+.amtl input{font-size:15px;font-weight:700;letter-spacing:0}
+.amtl span{font-size:13px}
+.ln{font-size:13.5px;padding:8px 0;min-height:34px}
+.eftop .ln.dt{flex:none;width:112px}
+.ef .btn.del{flex:none;height:auto;min-height:0;width:auto;padding:8px 2px 8px 6px;background:none;font-size:13px;font-weight:500;color:var(--danger)}
+.ef .chips{gap:5px;margin-top:10px}
+.ef .chip{padding:3px 10px;font-size:12px;border-radius:12px}
 </style>
 </head>
 <body>
@@ -190,11 +203,14 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 110px}
 <div class="scrim" id="scrim"></div>
 
 <div id="efStore" hidden><div class="ef" id="ef">
-  <label class="amtl"><input id="fAmt" inputmode="decimal" autocomplete="off" placeholder="0"><span>¥</span></label>
-  <input class="ln" id="fNote" autocomplete="off" placeholder="ランチ、電車、本…">
-  <input class="ln" id="fDate" type="date">
+  <div class="eftop">
+    <label class="amtl"><input id="fAmt" inputmode="decimal" autocomplete="off" placeholder="0"><span>¥</span></label>
+    <input class="ln dt" id="fDate" type="date">
+    <button class="btn del" id="fDel" type="button" hidden>削除</button>
+  </div>
+  <input class="ln" id="fNote" autocomplete="off" placeholder="内容">
+  <input class="ln" id="fShop" autocomplete="off" placeholder="場所">
   <div class="chips" id="fCats"></div>
-  <div class="acts"><button class="btn del" id="fDel" hidden>削除</button><button class="btn pri" id="fSave">保存</button></div>
 </div></div>
 
 <section class="sheet" id="setSheet" aria-label="設定">
@@ -267,6 +283,7 @@ function calHtml(all){
   return h + '</div></div>';
 }
 function render(){
+  const fa = document.activeElement, fid = fa && fa.closest && fa.closest('#ef') ? fa.id : '', fsel = fid && fa.selectionStart != null ? [fa.selectionStart, fa.selectionEnd] : null;
   $('#efStore').appendChild($('#ef'));
   $('#label').textContent = ymLabel(ym);
   $('#next').disabled = ym >= today().slice(0, 7);
@@ -294,13 +311,14 @@ function render(){
       cur = e.d; open = true;
       h += `<div class="day"><span>${esc(dayLabel(e.d))}</span><b>${fmt(dayTot[e.d])}</b></div><div class="lines">`;
     }
-    h += `<button class="lrow" data-id="${esc(e.id)}"><span class="t"><i class="kd sup k-${esc(e.c)}"></i>${(() => { const [it, sh] = splitNote(e.n || catLabel(e.c)); return esc(it) + (sh ? ` <code class="shop">${esc(sh)}</code>` : ''); })()}</span><span class="a">${fmt(e.a)}</span></button>` + (openId === e.id ? efSlot(false) : '');
+    h += rowHtml(e) + (openId === e.id ? efSlot(false) : '');
   });
   if (open) h += '</div>';
   $('#main').innerHTML = h;
   const slot = $('#efSlot');
   if (slot){
     slot.firstChild.appendChild($('#ef'));
+    if (fid){ const el = $('#' + fid); el.focus({preventScroll: true}); if (fsel) try { el.setSelectionRange(fsel[0], fsel[1]); } catch (_) {} }
     if (!efReady){ efReady = true; requestAnimationFrame(() => requestAnimationFrame(() => { slot.classList.add('open'); if (efFocus){ efFocus = false; $('#fAmt').focus({preventScroll: true}); } })); }
   }
 }
@@ -338,11 +356,6 @@ $('#fCats').addEventListener('click', e => {
   const b = e.target.closest('.chip'); if (!b) return;
   pickedCat = b.dataset.c; catTouched = true; paintCats();
 });
-$('#fNote').addEventListener('input', () => {
-  if (catTouched) return;
-  const g = guessCat($('#fNote').value);
-  if (g !== pickedCat){ pickedCat = g; paintCats(); }
-});
 const sizeAmt = () => { const i = $('#fAmt'); i.style.width = (Math.max(1, i.value.length) + .3) + 'ch'; };
 $('#fAmt').addEventListener('input', sizeAmt);
 function openEntry(id){
@@ -350,7 +363,8 @@ function openEntry(id){
   editId = id || null; delArmed = false;
   const e = id ? entries[id] : null;
   $('#fAmt').value = e ? String(e.a) : '';
-  $('#fNote').value = e ? e.n : '';
+  const [nIt, nSh] = splitNote(e ? e.n : '');
+  $('#fNote').value = nIt; $('#fShop').value = nSh;
   $('#fDate').value = e ? e.d : today();
   pickedCat = e ? e.c : ''; catTouched = !!e; paintCats(); sizeAmt();
   $('#fDel').hidden = !e; $('#fDel').textContent = '削除';
@@ -360,26 +374,39 @@ function openEntry(id){
 }
 function closeEntry(anim){
   if (!openId || efClosing) return;
-  const s = $('#efSlot'), fin = () => { openId = null; efReady = false; efClosing = false; render(); };
+  const s = $('#efSlot'), fin = () => { const ce = entries[editId]; if (ce && !ce.d.startsWith(ym)){ ym = ce.d.slice(0, 7); LS.set('ym', ym); } openId = null; efReady = false; efClosing = false; render(); };
   if (anim && s){ efClosing = true; s.classList.remove('open'); document.activeElement && document.activeElement.blur && document.activeElement.blur(); setTimeout(fin, 210); } else fin();
 }
 $('#fab').addEventListener('click', () => { if (openId === 'new') closeEntry(true); else openEntry(null); });
-function saveEntry(){
-  const a = Number(String($('#fAmt').value).replace(/[,\s¥]/g, ''));
-  if (!isFinite(a) || a <= 0){ $('#fAmt').focus(); return; }
-  const d = /^\d{4}-\d{2}-\d{2}$/.test($('#fDate').value) ? $('#fDate').value : today();
-  const id = editId || uid();
-  entries[id] = {id, a: Math.round(a * 100) / 100, n: $('#fNote').value.trim(), c: pickedCat || 'Other', d, u: Date.now()};
-  delete del[id];
-  if (!d.startsWith(ym)){ ym = d.slice(0, 7); LS.set('ym', ym); }
-  persist(); openId = null; efReady = false; efClosing = false; render(); markDirty();
+const noteText = () => [$('#fNote').value.trim(), $('#fShop').value.trim()].filter(Boolean).join(' / ');
+function rowHtml(e){
+  return `<button class="lrow" data-id="${esc(e.id)}"><span class="t"><i class="kd sup k-${esc(e.c)}"></i>${(() => { const [it, sh] = splitNote(e.n || catLabel(e.c)); return esc(it) + (sh ? ` <code class="shop">${esc(sh)}</code>` : ''); })()}</span><span class="a">${fmt(e.a)}</span></button>`;
 }
-$('#fSave').addEventListener('click', saveEntry);
-$('#fNote').addEventListener('keydown', e => { if (e.key === 'Enter') saveEntry(); });
+function commit(){
+  const a = Number(String($('#fAmt').value).replace(/[,\s¥]/g, ''));
+  if (!isFinite(a) || a <= 0) return;
+  const d = /^\d{4}-\d{2}-\d{2}$/.test($('#fDate').value) ? $('#fDate').value : today();
+  const created = !editId, id = editId || uid();
+  entries[id] = {id, a: Math.round(a * 100) / 100, n: noteText(), c: pickedCat || 'Other', d, u: Date.now()};
+  delete del[id];
+  persist(); markDirty();
+  if (created){ editId = id; openId = id; $('#fDel').hidden = false; render(); return; }
+  const r = document.querySelector(`.lrow[data-id="${id}"]`);
+  if (r) r.outerHTML = rowHtml(entries[id]);
+}
+function onEdit(){
+  if (!catTouched){ const g = guessCat(noteText()); if (g !== pickedCat){ pickedCat = g; paintCats(); } }
+  commit();
+}
+['fAmt', 'fNote', 'fShop'].forEach(i => $('#' + i).addEventListener('input', onEdit));
+$('#fDate').addEventListener('change', onEdit);
 $('#fAmt').addEventListener('keydown', e => { if (e.key === 'Enter') $('#fNote').focus(); });
+$('#fNote').addEventListener('keydown', e => { if (e.key === 'Enter') $('#fShop').focus(); });
+$('#fShop').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.blur(); });
+let delT = null;
 $('#fDel').addEventListener('click', () => {
   if (!editId) return;
-  if (!delArmed){ delArmed = true; $('#fDel').textContent = 'もう一度タップで削除'; return; }
+  if (!delArmed){ delArmed = true; $('#fDel').textContent = '本当に？'; clearTimeout(delT); delT = setTimeout(() => { delArmed = false; $('#fDel').textContent = '削除'; }, 3000); return; }
   delete entries[editId]; del[editId] = Date.now();
   persist(); openId = null; efReady = false; efClosing = false; render(); markDirty();
 });
