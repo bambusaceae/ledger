@@ -2,7 +2,7 @@
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -27,7 +27,7 @@
   --fill:#7676803d; --danger:#FF453A;
   --glass:rgba(22,22,24,.55); --glass-w:rgba(28,28,30,.84); --scrim:rgba(0,0,0,.55); color-scheme:dark}}
 *{box-sizing:border-box;cursor:default}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;touch-action:pan-x pan-y}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;background:none;border:0;padding:0}
 input{font:inherit;color:inherit;cursor:text}
@@ -382,6 +382,10 @@ $('#syncBtn').addEventListener('click', () => { if (!sOn()){ setupSyncForm(); sh
 addEventListener('online', () => sync());
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') sync(); else if (isDirty()) sync(); });
 setInterval(() => { if (document.visibilityState === 'visible') sync(); }, 45000);
+
+/* no pinch zoom */
+['gesturestart', 'gesturechange', 'gestureend'].forEach(t => document.addEventListener(t, e => e.preventDefault()));
+document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, {passive: false});
 
 /* ---------- boot ---------- */
 render(); paintDot();
