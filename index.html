@@ -162,15 +162,15 @@ const LS = {
   set(k, v){ try{ localStorage.setItem('lg:' + k, JSON.stringify(v)); }catch(e){} }
 };
 const CATS = ['Eating', 'Drinking', 'Transport', 'Goods', 'Medical', 'Groceries', 'Other'];
-const LABELS = {Eating: '食事', Drinking: '飲み物', Transport: '交通', Goods: '買い物', Medical: '医療', Groceries: '食料品', Other: 'その他'};
+const LABELS = {Eating: '食事', Drinking: '飲み物', Transport: '交通', Goods: 'ショッピング', Medical: '医療', Groceries: '家用', Other: 'その他'};
 const catLabel = c => LABELS[c] || c;
 const GUESS = [
   ['Medical', /pharmacy|drugstore|clinic|hospital|doctor|medicine|dental|dentist|病院|薬局|薬|クリニック|歯科|医院|药|医院|看病|诊所|牙/i],
   ['Drinking', /coffee|cafe|latte|tea|beer|wine|sake|juice|boba|drink|bar\b|コーヒー|カフェ|ビール|お茶|ジュース|飲み|咖啡|奶茶|啤酒|饮料|果汁|喝|yogurt|ヨーグルト|酸奶|milk|soda|cola|water|bottle|smoothie|牛乳|ミルク|ソーダ|コーラ|水|ペットボトル|乳酸菌|牛奶|矿泉水|汽水|可乐/i],
-  ['Groceries', /grocer|supermarket|market|fruit|vegetable|konbini|convenience|lawson|familymart|family mart|seven|ministop|aeon|スーパー|コンビニ|ローソン|ファミマ|セブン|ミニストップ|イオン|超市|买菜|水果|蔬菜|便利店/i],
+  ['Groceries', /grocer|supermarket|market|fruit|vegetable|meat|fish|egg|\brice\b|seasoning|soy sauce|miso|konbini|convenience|lawson|familymart|family mart|seven|ministop|aeon|detergent|tissue|toilet paper|shampoo|soap|スーパー|コンビニ|ローソン|ファミマ|セブン|ミニストップ|イオン|野菜|果物|肉|魚|卵|米|調味料|醤油|味噌|洗剤|ティッシュ|トイレットペーパー|シャンプー|石鹸|日用|超市|买菜|水果|蔬菜|调料|纸巾|洗发|洗衣/i],
   ['Eating', /lunch|dinner|breakfast|ramen|sushi|restaurant|bento|snack|izakaya|curry|meal|ランチ|ラーメン|寿司|居酒屋|弁当|定食|午饭|晚饭|早饭|外卖|吃|饭|面|餐/i],
   ['Transport', /train|bus|taxi|suica|pasmo|metro|subway|fare|電車|バス|タクシー|交通|地铁|电车|公交|打车/i],
-  ['Goods', /clothes|shoes|amazon|uniqlo|book|textbook|coaster|goods|merch|soap|shampoo|detergent|tissue|gift|グッズ|コースター|本|服|靴|洗剤|日用|购物|衣服|鞋|书|周边|谷子|日用品/i]
+  ['Goods', /clothes|shoes|amazon|uniqlo|book|textbook|stationery|toy|figure|merch|goods|coaster|gift|shopping|グッズ|アクスタ|アクリル|コースター|ガチャ|文具|文房具|おもちゃ|玩具|ぬいぐるみ|フィギュア|書籍|参考書|教科書|マンガ|漫画|服|靴|買い物|周边|谷子|盲盒|扭蛋|衣服|鞋|书/i]
 ];
 const guessCat = t => { for (const [c, re] of GUESS) if (re.test(t)) return c; return ''; };
 
