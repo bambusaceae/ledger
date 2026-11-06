@@ -263,7 +263,7 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 110px}
 
 /* v11 grouped theme: gray canvas, white groups, blue accent, line icons */
 :root{--bg:#f2f2f7;--card:#ffffff;--card-lt:#ffffff;--sep:#c6c6c8;--sep-l:#e5e5ea;--accent:#007AFF;--on-accent:#ffffff;--tint:#e5f0ff;--tint-ink:#007AFF;--bar:#007AFF;--glass:rgba(242,242,247,.8);--glass-w:rgba(255,255,255,.8);--grp:#ffffff}
-@media (prefers-color-scheme:dark){:root{--bg:#1c1c1e;--card:#000000;--card-lt:#000000;--sep:#38383a;--sep-l:#2c2c2e;--accent:#0A84FF;--on-accent:#ffffff;--tint:#0a2a52;--tint-ink:#0A84FF;--bar:#0A84FF;--glass:rgba(28,28,30,.72);--glass-w:rgba(44,44,46,.8);--grp:#000000}}
+@media (prefers-color-scheme:dark){:root{--bg:#151515;--card:#000000;--card-lt:#000000;--sep:#38383a;--sep-l:#2c2c2e;--accent:#0A84FF;--on-accent:#ffffff;--tint:#0a2a52;--tint-ink:#0A84FF;--bar:#0A84FF;--glass:rgba(21,21,21,.72);--glass-w:rgba(44,44,46,.8);--grp:#000000}}
 .top{background:var(--glass);border-bottom:0}
 .top-in{grid-template-columns:1fr auto;height:44px;padding-inline:8px}
 .hl,.hb{display:flex;align-items:center}
@@ -339,12 +339,17 @@ body{overflow-x:clip}
 .cal-g .cal-d.today .v{margin-top:2px}
 .day{padding-right:14px}
 .day b{font-size:17px;font-weight:700;color:var(--ink)}
+
+/* v15 */
+.cal-g .cal-d{justify-content:flex-start;padding-top:10.5px}
+.ib svg circle[fill]{fill:currentColor}
+.dot{top:4px;right:4px}
 </style>
 </head>
 <body>
 <header class="top"><div class="top-in">
   <div class="hl"></div>
-  <div class="hb"><button class="ib" id="syncBtn" aria-label="今すぐ同期"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></svg><i class="dot" id="dot"></i></button><button class="ib" id="setBtn" aria-label="設定"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></div>
+  <div class="hb"><button class="ib" id="setBtn" aria-label="同期と設定"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><circle cx="8" cy="12" r="1.05" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.05" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="1.05" fill="currentColor" stroke="none"/></svg><i class="dot" id="dot"></i></button></div>
 </div></header>
 <div class="ttlwrap"><div class="ttlrow"><h1 class="ttl" id="label"></h1><button class="ib" id="prev" aria-label="前の月"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><button class="ib" id="next" aria-label="次の月"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div></div>
 
@@ -371,7 +376,7 @@ body{overflow-x:clip}
   <div class="sh-h"><h2>GitHub 同期</h2><button class="ib" data-close aria-label="閉じる"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <label class="fld"><span>リポジトリ</span><input id="srepo" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="owner/repo"></label>
   <label class="fld"><span>トークン</span><input id="stoken" type="password" autocomplete="off" placeholder="fine-grained トークンを貼り付け"></label>
-  <div class="acts"><button class="btn pri" id="ssave">保存して同期</button></div>
+  <div class="acts"><button class="btn pri" id="ssave">保存して同期</button><button class="btn" id="syncNow">今すぐ同期</button></div>
   <div class="note-s" id="syncNote"></div>
   <p class="hint">記録はまずこの端末に保存され、リポジトリの data.json と同期されます。オンラインに戻ったときにも同期されます。</p>
 </section>
@@ -808,7 +813,7 @@ $('#ssave').addEventListener('click', () => {
   LS.set('repo', $('#srepo').value.trim());
   setupSyncForm(); LS.set('dirty', Date.now()); paintDot(); sync();
 });
-$('#syncBtn').addEventListener('click', () => { if (!sOn()){ setupSyncForm(); showSheet($('#setSheet')); } else sync(); });
+$('#syncNow').addEventListener('click', () => { if (!sOn()){ $('#ssave').click(); } else sync(); });
 addEventListener('online', () => sync());
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') sync(); else if (isDirty()) sync(); });
 setInterval(() => { if (document.visibilityState === 'visible') sync(); }, 45000);
