@@ -16,7 +16,7 @@
 :root{
   --bg:#ffffff; --card:#f2f2f4; --ink:#000000; --ink2:#3c3c43d9; --mute:#3c3c4399; --sep:#d1d1d6;
   --accent:#FFCC00; --on-accent:#1c1c1e; --tint:#FFF4C7; --tint-ink:#7a5d00; --bar:#FFCC00; --track:#00000010;
-  --fill:#7676801f; --glow:#FFCC0030; --danger:#FF3B30;
+  --fill:#7676801f; --glow:transparent; --danger:#FF3B30;
   --glass:rgba(255,255,255,.55); --glass-w:rgba(255,255,255,.82); --scrim:rgba(0,0,0,.28);
   --f-body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans","PingFang SC","Noto Sans CJK JP",system-ui,sans-serif;
   --hdr:48px;
@@ -24,7 +24,7 @@
 @media (prefers-color-scheme: dark){:root{
   --bg:#000000; --card:#1c1c1e; --ink:#ffffff; --ink2:#ebebf5d9; --mute:#ebebf599; --sep:#38383a;
   --accent:#FFD60A; --on-accent:#1c1c1e; --tint:#2b2500; --tint-ink:#ffd60a; --bar:#FFD60A; --track:#ffffff14;
-  --fill:#7676803d; --glow:#FFD60A22; --danger:#FF453A;
+  --fill:#7676803d; --glow:transparent; --danger:#FF453A;
   --glass:rgba(22,22,24,.55); --glass-w:rgba(28,28,30,.84); --scrim:rgba(0,0,0,.55); color-scheme:dark}}
 *{box-sizing:border-box;cursor:default}
 html{-webkit-text-size-adjust:100%;touch-action:pan-x pan-y}
@@ -73,27 +73,25 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 110px}
 .calbar button{width:46px;height:26px;border-radius:13px;display:grid;place-items:center;color:var(--mute);transition:background-color .15s ease}
 .calbar svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s ease}
 .calbar.open svg{transform:rotate(180deg)}
-/* richer styling */
-.k-Eating{--k:#FF9500}.k-Drinking{--k:#17A2B8}.k-Transport{--k:#5E5CE6}.k-Goods{--k:#F0457A}.k-Medical{--k:#30B050}.k-Groceries{--k:#A07A4F}.k-Other{--k:#8E8E93}
-.bdg{flex:none;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:15px;font-weight:700;color:var(--k,#8E8E93);background:color-mix(in srgb,var(--k,#8E8E93) 15%,transparent)}
-.bdg.sm{width:24px;height:24px;border-radius:8px;font-size:12px}
-body{background-image:radial-gradient(130% 260px at 50% -40px,var(--glow),transparent 72%);background-repeat:no-repeat}
-.lines{display:block;background:var(--card);border-radius:16px;padding:2px 10px;overflow:hidden}
-.lrow{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center}
-.day b{background:var(--tint);color:var(--tint-ink);padding:2px 10px;border-radius:10px;font-size:12px}
-.day{margin:20px 4px 8px}
+/* restrained styling */
+.k-Eating{--k:#E8943A}.k-Drinking{--k:#3FA7B8}.k-Transport{--k:#7B78D8}.k-Goods{--k:#D9628A}.k-Medical{--k:#4DAA67}.k-Groceries{--k:#A08462}.k-Other{--k:#9A9AA0}
+.kd{flex:none;display:block;width:8px;height:8px;border-radius:50%;background:var(--k,#9A9AA0)}
+.lines{display:block;background:var(--card);border-radius:8px;padding:2px 12px;overflow:hidden}
+.lrow:last-child{border-bottom:0}
+.day{margin:18px 4px 6px}
 .catr{align-items:center;justify-content:flex-start;gap:9px}
 .catr .nm{flex:1;min-width:0}
-.cats2{row-gap:2px}
 .cal-g{gap:4px}
-.cal-d{box-shadow:0 0 0 .5px var(--sep) inset}
-.cal-d.has{box-shadow:0 0 0 .5px color-mix(in srgb,var(--accent) 55%,transparent) inset}
-.cal-d.sel{box-shadow:inset 0 0 0 1.5px var(--accent)}
-.fab{box-shadow:0 8px 22px color-mix(in srgb,var(--accent) 55%,transparent),0 0 0 .5px rgba(0,0,0,.08)}
-.mnav .label{position:relative}
-.mnav .label::after{content:"";display:block;width:18px;height:3px;border-radius:2px;background:var(--accent);margin:1px auto 0}
-.lines{display:block}
-.lrow{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;text-align:left;padding:9px 6px;border-bottom:.5px solid var(--sep);transition:background-color .15s ease}
+.cal-d{position:relative;min-height:50px;padding:0;border-radius:7px;display:block}
+.cal-d .n{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);margin:0}
+.cal-d .v{position:absolute;left:0;right:0;bottom:4px;text-align:center}
+.cal-d.has{background:var(--card)}
+.calwrap{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .3s cubic-bezier(.4,0,.2,1),visibility 0s .3s}
+.calwrap.open{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .3s cubic-bezier(.4,0,.2,1),visibility 0s}
+.calin{overflow:hidden;min-height:0}
+@media (prefers-reduced-motion:reduce){.calwrap,.calwrap.open{transition:none}}
+.lrow{display:grid;grid-template-columns:8px minmax(0,1fr) auto;gap:10px;align-items:start;width:100%;text-align:left;padding:9px 6px;border-bottom:.5px solid var(--sep);transition:background-color .15s ease}
+.lrow .kd{margin-top:7px}
 .lrow .t{font-size:15px;overflow-wrap:anywhere}
 .lrow .s{font-size:12px;color:var(--mute)}
 .lrow .a{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -183,8 +181,7 @@ const LS = {
 };
 const CATS = ['Eating', 'Drinking', 'Transport', 'Goods', 'Medical', 'Groceries', 'Other'];
 const LABELS = {Eating: '食事', Drinking: '飲み物', Transport: '交通', Goods: 'ショッピング', Medical: '医療', Groceries: '家用', Other: 'その他'};
-const BADGE = {Eating:'食',Drinking:'飲',Transport:'交',Goods:'買',Medical:'医',Groceries:'家',Other:'他'};
-const bdg = (c, sm) => `<span class="bdg${sm ? ' sm' : ''} k-${esc(c)}">${esc(BADGE[c] || String(c).slice(0, 1))}</span>`;
+const kdot = c => `<i class="kd k-${esc(c)}"></i>`;
 const catLabel = c => LABELS[c] || c;
 const GUESS = [
   ['Medical', /pharmacy|drugstore|clinic|hospital|doctor|medicine|dental|dentist|病院|薬局|薬|クリニック|歯科|医院|药|医院|看病|诊所|牙/i],
@@ -244,9 +241,9 @@ function render(){
   let h = '';
   if (all.some(e => isDemo(e.id))) h += '<div class="fbar" style="margin-top:0">サンプルデータ<button id="clrdemo">サンプルを消す</button></div>';
   if (catList.length) h += '<div class="cats2">' + catList.map(c =>
-    `<button class="catr${filterCat === c ? ' sel' : ''}" data-cat="${esc(c)}">${bdg(c, true)}<span class="nm">${esc(catLabel(c))}</span><span class="am">${fmt(by[c])}</span></button>`).join('') + '</div>';
+    `<button class="catr${filterCat === c ? ' sel' : ''}" data-cat="${esc(c)}">${kdot(c)}<span class="nm">${esc(catLabel(c))}</span><span class="am">${fmt(by[c])}</span></button>`).join('') + '</div>';
   h += `<div class="calbar${calOpen ? ' open' : ''}"><button id="calTgl" aria-label="${calOpen ? 'カレンダーを隠す' : 'カレンダーを表示'}" aria-expanded="${calOpen}"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div>`;
-  if (calOpen) h += calHtml(all);
+  h += `<div class="calwrap${calOpen ? ' open' : ''}" id="calWrap"><div class="calin">${calHtml(all)}</div></div>`;
   const list = all.filter(e => (!filterCat || e.c === filterCat) && (!filterDay || e.d === filterDay)).sort((a, b) => b.d.localeCompare(a.d) || (b.u || 0) - (a.u || 0));
   if (filterCat || filterDay) h += `<div class="fbar">表示中：${esc([filterCat ? catLabel(filterCat) : '', filterDay ? dayShort(filterDay) : ''].filter(Boolean).join(' · '))}<button id="clr">すべて表示</button></div>`;
   if (!list.length) h += `<div class="empty">${all.length ? '該当する記録はありません。' : 'この月の記録はありません。<br>＋で追加できます。'}</div>`;
@@ -258,14 +255,14 @@ function render(){
       cur = e.d; open = true;
       h += `<div class="day"><span>${esc(dayLabel(e.d))}</span><b>${fmt(dayTot[e.d])}</b></div><div class="lines">`;
     }
-    h += `<button class="lrow" data-id="${esc(e.id)}">${bdg(e.c)}<span><div class="t">${esc(e.n || catLabel(e.c))}</div>${e.n ? `<div class="s">${esc(catLabel(e.c))}</div>` : ''}</span><span class="a">${fmt(e.a)}</span></button>`;
+    h += `<button class="lrow" data-id="${esc(e.id)}">${kdot(e.c)}<span><div class="t">${esc(e.n || catLabel(e.c))}</div>${e.n ? `<div class="s">${esc(catLabel(e.c))}</div>` : ''}</span><span class="a">${fmt(e.a)}</span></button>`;
   });
   if (open) h += '</div>';
   $('#main').innerHTML = h;
 }
 $('#main').addEventListener('click', e => {
   if (e.target.closest('#clrdemo')){ Object.keys(entries).forEach(id => { if (isDemo(id)) delete entries[id]; }); render(); return; }
-  if (e.target.closest('#calTgl')){ calOpen = !calOpen; LS.set('calOpen', calOpen); render(); return; }
+  if (e.target.closest('#calTgl')){ calOpen = !calOpen; LS.set('calOpen', calOpen); $('#calWrap').classList.toggle('open', calOpen); $('.calbar').classList.toggle('open', calOpen); const tg = $('#calTgl'); tg.setAttribute('aria-expanded', calOpen); tg.setAttribute('aria-label', calOpen ? 'カレンダーを隠す' : 'カレンダーを表示'); return; }
   const cr = e.target.closest('.catr'); if (cr){ filterCat = filterCat === cr.dataset.cat ? null : cr.dataset.cat; render(); return; }
   if (e.target.closest('#clr')){ filterCat = null; filterDay = null; render(); return; }
   const cd = e.target.closest('.cal-d'); if (cd && cd.dataset.day){ filterDay = filterDay === cd.dataset.day ? null : cd.dataset.day; render(); return; }
