@@ -47,7 +47,7 @@ svg{display:block}
 .dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--bg);display:none}
 .dot.on{display:block}
 
-main{max-width:560px;margin-inline:auto;padding:12px 12px 120px}
+main{max-width:560px;margin-inline:auto;padding:12px 12px 150px}
 
 /* summary */
 .sum{background:var(--tint);border-radius:18px;padding:16px 16px 10px}
@@ -62,17 +62,39 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 120px}
 .catrow.sel .nm{font-weight:600}
 .fbar{display:flex;align-items:center;gap:8px;margin:12px 4px 0;font-size:12px;color:var(--mute)}
 .fbar button{padding:3px 10px;border-radius:11px;background:var(--card);color:var(--ink2)}
-.cal{background:var(--card);border-radius:14px;padding:10px 8px 8px;margin-top:12px}
+.cal{margin-top:4px}
 .cal-h,.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
 .cal-h span{text-align:center;font-size:11px;color:var(--mute);padding-bottom:4px}
-.cal-d{min-height:46px;min-width:0;border-radius:9px;padding:4px 1px 3px;display:flex;flex-direction:column;align-items:center;gap:1px;background:transparent;transition:background-color .15s ease}
+.cal-d{min-height:46px;min-width:0;border-radius:9px;padding:4px 1px 3px;display:flex;flex-direction:column;align-items:center;gap:1px;background:var(--card);transition:background-color .15s ease}
 .cal-d.has{background:var(--tint)}
-.cal-d.blank{pointer-events:none}
+.cal-d.blank{pointer-events:none;background:transparent}
 .cal-d .n{font-size:12px;line-height:18px;min-width:18px;height:18px;border-radius:9px;text-align:center;color:var(--ink2)}
 .cal-d.today .n{background:var(--accent);color:var(--on-accent);font-weight:700}
-.cal-d .v{font-size:10.5px;font-variant-numeric:tabular-nums;line-height:1.2;white-space:nowrap}
+.cal-d .v{font-weight:600;font-size:10.5px;font-variant-numeric:tabular-nums;line-height:1.2;white-space:nowrap}
 .cal-d.sel{box-shadow:inset 0 0 0 1.5px var(--accent)}
 @media (hover:hover){.cal-d:hover:not(.blank){background-color:var(--fill)}}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px}
+.tile{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0;padding:14px 6px 12px;border-radius:18px;background:var(--card);transition:background-color .15s ease}
+.tile .tn{font-size:14px;font-weight:500}
+.ico{width:46px;height:46px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center}
+.ico svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tile .ta{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+.tile.zero .ta{color:var(--mute);font-weight:600}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ent{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0;padding:10px 10px 9px;border-radius:12px;background:var(--card);text-align:left;transition:background-color .15s ease}
+.ent .ec{font-size:11px;color:var(--mute)}
+.ent .ea{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+.ent .en{font-size:12px;line-height:1.35;color:var(--ink2);overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+@media (hover:hover){.tile:hover,.ent:hover{background-color:var(--fill)}}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:18;background:var(--glass);-webkit-backdrop-filter:blur(30px) saturate(1.9);backdrop-filter:blur(30px) saturate(1.9);border-top:.5px solid var(--sep);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs-in{max-width:560px;margin-inline:auto;display:flex;padding:6px 12px 4px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:2px 0;font-size:11px;color:var(--mute)}
+.tab .ti{width:44px;height:30px;border-radius:15px;display:grid;place-items:center;transition:background-color .15s ease}
+.tab .ti svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tab.on{color:var(--ink);font-weight:600}
+.tab.on .ti{background:var(--accent);color:var(--on-accent)}
+@media (hover:hover){.tab:not(.on):hover .ti{background-color:var(--fill)}}
+
 
 /* list */
 .day{display:flex;justify-content:space-between;align-items:baseline;margin:18px 6px 6px;font-size:13px;color:var(--mute);font-weight:500}
@@ -87,7 +109,7 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 120px}
 .empty{text-align:center;color:var(--mute);padding:56px 20px;font-size:14px}
 
 /* add button */
-.fab{position:fixed;right:max(18px,calc(50vw - 280px + 18px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:15;width:56px;height:56px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.18),0 0 0 .5px rgba(0,0,0,.08);transition:filter .15s ease,transform .15s ease}
+.fab{position:fixed;right:max(18px,calc(50vw - 280px + 18px));bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:15;width:56px;height:56px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.18),0 0 0 .5px rgba(0,0,0,.08);transition:filter .15s ease,transform .15s ease}
 .fab svg{width:26px;height:26px;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;fill:none}
 @media (hover:hover){.fab:hover{filter:brightness(.96)}}
 .fab:active{transform:scale(.96)}
@@ -129,6 +151,11 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 120px}
 </div></header>
 
 <main id="main"></main>
+
+<nav class="tabs"><div class="tabs-in">
+  <button class="tab on" data-v="home"><span class="ti"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg></span>Home</button>
+  <button class="tab" data-v="tx"><span class="ti"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span>Transactions</button>
+</div></nav>
 
 <button class="fab" id="fab" aria-label="Add entry"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
 
@@ -177,6 +204,7 @@ let ym = LS.get('ym', '') ;
 const pad = n => String(n).padStart(2, '0');
 const dstr = dt => `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}`;
 const today = () => dstr(new Date());
+const isDemo = id => id.startsWith('demo-');
 if (!/^\d{4}-\d{2}$/.test(ym)) ym = today().slice(0, 7);
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
@@ -194,58 +222,73 @@ function dayLabel(d){
 let filterCat = null, filterDay = null;
 
 /* ---------- render ---------- */
-function render(){
-  $('#label').textContent = ymLabel(ym);
-  $('#next').disabled = ym >= today().slice(0, 7);
-  const all = Object.values(entries).filter(e => e.d.startsWith(ym));
-  const total = all.reduce((s, e) => s + e.a, 0);
-  const by = {};
-  all.forEach(e => { by[e.c] = (by[e.c] || 0) + e.a; });
-  const catList = Object.keys(by).sort((a, b) => by[b] - by[a]);
-  const max = catList.length ? by[catList[0]] : 1;
-  if (filterCat && !by[filterCat]) filterCat = null;
-  let h = `<div class="sum"><div class="cap">Spent in ${esc(ymLabel(ym))}</div><div class="big">${fmt(total)}</div><div class="cnt">${all.length} ${all.length === 1 ? 'entry' : 'entries'}</div>`;
-  if (catList.length){
-    h += '<div class="cats">' + catList.map(c =>
-      `<button class="catrow${filterCat === c ? ' sel' : ''}" data-cat="${esc(c)}"><span class="nm">${esc(c)}</span><span class="am">${fmt(by[c])}</span></button>`).join('') + '</div>';
-  }
-  h += '</div>';
-  if (filterDay && !filterDay.startsWith(ym)) filterDay = null;
-  const [cy, cm] = ym.split('-').map(Number), lead = new Date(cy, cm - 1, 1).getDay(), dim = new Date(cy, cm, 0).getDate(), tdy = today();
+const ICONS = {
+  Eating: '<path d="M7 3v6a2 2 0 0 0 4 0V3M9 11v10M17 21V3c-2 1-3.5 3.5-3.5 7H17"/>',
+  Drinking: '<path d="M5 8h12v6a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5V8z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M9 3v2M13 3v2"/>',
+  Transport: '<rect x="5" y="4" width="14" height="13" rx="3"/><path d="M5 11h14M8 17v3M16 17v3M8.5 14h.01M15.5 14h.01"/>',
+  Goods: '<path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>',
+  Medical: '<rect x="4" y="7" width="16" height="13" rx="2.5"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M12 11v5M9.5 13.5h5"/>',
+  Groceries: '<path d="M4 10h16l-1.6 9H5.6L4 10z"/><path d="M8 10l3-5M16 10l-3-5"/>',
+  Other: '<path d="M6 12h.01M12 12h.01M18 12h.01" style="stroke-width:3"/>'
+};
+const iconOf = c => `<svg viewBox="0 0 24 24">${ICONS[c] || ICONS.Other}</svg>`;
+let view = LS.get('view', 'home'); if (view !== 'home' && view !== 'tx') view = 'home';
+const amtShort = n => '¥' + (n >= 100000 ? Math.round(n / 1000) + 'k' : n.toLocaleString('en-US', {maximumFractionDigits: 0}));
+
+function homeHtml(all){
+  const by = {}; all.forEach(e => { by[e.c] = (by[e.c] || 0) + e.a; });
+  const cats = CATS.concat(Object.keys(by).filter(c => !CATS.includes(c)));
+  return '<div class="tiles">' + cats.map(c =>
+    `<button class="tile${by[c] ? '' : ' zero'}" data-cat="${esc(c)}"><span class="tn">${esc(c)}</span><span class="ico">${iconOf(c)}</span><span class="ta">${fmt(by[c] || 0)}</span></button>`).join('') + '</div>';
+}
+function txHtml(all){
+  const [cy, cm] = ym.split('-').map(Number), lead = (new Date(cy, cm - 1, 1).getDay() + 6) % 7, dim = new Date(cy, cm, 0).getDate(), tdy = today();
   const dsum = {}; all.forEach(e => { dsum[e.d] = (dsum[e.d] || 0) + e.a; });
-  const shortAmt = n => '¥' + (n >= 100000 ? Math.round(n / 1000) + 'k' : n.toLocaleString('en-US', {maximumFractionDigits: 0}));
-  h += '<div class="cal"><div class="cal-h">' + DOW.map(x => `<span>${x.slice(0, 1)}</span>`).join('') + '</div><div class="cal-g">';
+  let h = '<div class="cal"><div class="cal-h">' + ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(x => `<span>${x}</span>`).join('') + '</div><div class="cal-g">';
   for (let i = 0; i < lead; i++) h += '<span class="cal-d blank"></span>';
   for (let dn = 1; dn <= dim; dn++){
     const key = `${ym}-${pad(dn)}`, v = dsum[key];
-    h += `<button class="cal-d${v ? ' has' : ''}${key === tdy ? ' today' : ''}${key === filterDay ? ' sel' : ''}" data-day="${key}"><span class="n">${dn}</span>${v ? `<span class="v">${shortAmt(v)}</span>` : ''}</button>`;
+    h += `<button class="cal-d${v ? ' has' : ''}${key === tdy ? ' today' : ''}${key === filterDay ? ' sel' : ''}" data-day="${key}"><span class="n">${dn}</span>${v ? `<span class="v">${amtShort(v)}</span>` : ''}</button>`;
   }
   h += '</div></div>';
   const list = all.filter(e => (!filterCat || e.c === filterCat) && (!filterDay || e.d === filterDay)).sort((a, b) => b.d.localeCompare(a.d) || (b.u || 0) - (a.u || 0));
   if (filterCat || filterDay) h += `<div class="fbar">Showing ${esc([filterCat, filterDay ? dayLabel(filterDay).replace('Today · ', '').replace('Yesterday · ', '') : ''].filter(Boolean).join(' · '))}<button id="clr">Show all</button></div>`;
   if (!list.length) h += `<div class="empty">${all.length ? 'Nothing here.' : 'No entries this month.<br>Tap + to add one.'}</div>`;
   let cur = '', open = false;
-  const dayTot = {}; list.forEach(e => { dayTot[e.d] = (dayTot[e.d] || 0) + e.a; });
   list.forEach(e => {
     if (e.d !== cur){
       if (open) h += '</div>';
       cur = e.d; open = true;
-      h += `<div class="day"><span>${esc(dayLabel(e.d))}</span><b>${fmt(dayTot[e.d])}</b></div><div class="grp">`;
+      h += `<div class="day"><span>${esc(dayLabel(e.d))}</span></div><div class="g3">`;
     }
-    h += `<button class="row" data-id="${esc(e.id)}"><span><div class="t">${esc(e.n || e.c)}</div>${e.n ? `<div class="s">${esc(e.c)}</div>` : ''}</span><span class="a">${fmt(e.a)}</span></button>`;
+    h += `<button class="ent" data-id="${esc(e.id)}"><span class="ec">${esc(e.c)}</span><span class="ea">${fmt(e.a)}</span>${e.n ? `<span class="en">${esc(e.n)}</span>` : ''}</button>`;
   });
   if (open) h += '</div>';
+  return h;
+}
+function render(){
+  $('#label').textContent = ymLabel(ym);
+  $('#next').disabled = ym >= today().slice(0, 7);
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.v === view));
+  const all = Object.values(entries).filter(e => e.d.startsWith(ym));
+  if (filterDay && !filterDay.startsWith(ym)) filterDay = null;
+  let h = '';
+  if (all.some(e => isDemo(e.id))) h += '<div class="fbar" style="margin-top:0">Example entries<button id="clrdemo">Clear examples</button></div>';
+  h += view === 'home' ? homeHtml(all) : txHtml(all);
   $('#main').innerHTML = h;
 }
+function setView(v){ view = v; LS.set('view', v); render(); scrollTo(0, 0); }
 $('#main').addEventListener('click', e => {
-  const cr = e.target.closest('.catrow'); if (cr){ filterCat = filterCat === cr.dataset.cat ? null : cr.dataset.cat; render(); return; }
+  if (e.target.closest('#clrdemo')){ Object.keys(entries).forEach(id => { if (isDemo(id)) delete entries[id]; }); render(); return; }
+  const tl = e.target.closest('.tile'); if (tl){ filterCat = tl.dataset.cat; filterDay = null; setView('tx'); return; }
   if (e.target.closest('#clr')){ filterCat = null; filterDay = null; render(); return; }
   const cd = e.target.closest('.cal-d'); if (cd && cd.dataset.day){ filterDay = filterDay === cd.dataset.day ? null : cd.dataset.day; render(); return; }
-  const r = e.target.closest('.row'); if (r) openEntry(r.dataset.id);
+  const r = e.target.closest('.ent'); if (r) openEntry(r.dataset.id);
 });
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => { filterCat = null; filterDay = null; setView(t.dataset.v); }));
 function shiftMonth(k){
   const [y, m] = ym.split('-').map(Number), dt = new Date(y, m - 1 + k, 1);
-  ym = `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}`; LS.set('ym', ym); filterCat = null; filterDay = null; render(); scrollTo(0, 0);
+  ym = `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}`; LS.set('ym', ym); filterDay = null; render(); scrollTo(0, 0);
 }
 $('#prev').addEventListener('click', () => shiftMonth(-1));
 $('#next').addEventListener('click', () => shiftMonth(1));
