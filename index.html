@@ -344,7 +344,7 @@ function render(){
     `<button class="catr k-${esc(c)}${filterCat === c ? ' sel' : ''}" data-cat="${esc(c)}">${kdot(c)}<span class="nm">${esc(catLabel(c))}</span><span class="am">${fmt(by[c])}</span></button>`).join('') + '</div>';
   h += `<div class="calbar${calOpen ? ' open' : ''}"><button id="calTgl" aria-label="${calOpen ? 'カレンダーを隠す' : 'カレンダーを表示'}" aria-expanded="${calOpen}"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div>`;
   h += `<div class="calwrap${calOpen ? ' open' : ''}" id="calWrap"><div class="calin">${calHtml(all)}</div></div>`;
-  const list = all.filter(e => (!filterCat || e.c === filterCat) && (!filterDay || e.d === filterDay)).sort((a, b) => b.d.localeCompare(a.d) || (b.u || 0) - (a.u || 0));
+  const list = all.filter(e => (!filterCat || e.c === filterCat) && (!filterDay || e.d === filterDay)).sort((a, b) => b.d.localeCompare(a.d) || (b.t || b.u || 0) - (a.t || a.u || 0));
   if (filterCat || filterDay) h += `<div class="fbar">表示中：${esc([filterCat ? catLabel(filterCat) : '', filterDay ? dayShort(filterDay) : ''].filter(Boolean).join(' · '))}<button id="clr">すべて表示</button></div>`;
   if (!list.length) h += `<div class="empty">${all.length ? '該当する記録はありません。' : 'この月の記録はありません。<br>＋で追加できます。'}</div>`;
   if (openId && openId !== 'new' && !list.some(x => x.id === openId)){ openId = null; efReady = false; efClosing = false; }
@@ -434,7 +434,8 @@ function commit(){
   if (!isFinite(a) || a <= 0) return;
   const d = /^\d{4}-\d{2}-\d{2}$/.test($('#fDate').value) ? $('#fDate').value : today();
   const created = !editId, id = editId || uid();
-  entries[id] = {id, a: Math.round(a * 100) / 100, n: noteText(), c: pickedCat || 'Other', d, u: Date.now()};
+  const prev = entries[id];
+  entries[id] = {id, a: Math.round(a * 100) / 100, n: noteText(), c: pickedCat || 'Other', d, u: Date.now(), t: (prev && (prev.t || prev.u)) || Date.now()};
   delete del[id];
   persist(); markDirty();
   if (created){ editId = id; openId = id; $('#fDel').hidden = false; render(); return; }
@@ -478,7 +479,7 @@ const cleanEntry = (id, r) => {
   if (!r || typeof r !== 'object') return null;
   const a = Number(r.a), d = String(r.d || '');
   if (!isFinite(a) || a <= 0 || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return null;
-  return {id, a, n: String(r.n || ''), c: String(r.c || 'Other'), d, u: Number(r.u) || 0};
+  return {id, a, n: String(r.n || ''), c: String(r.c || 'Other'), d, u: Number(r.u) || 0, t: Number(r.t) || Number(r.u) || 0};
 };
 const normDoc = (E, D) => {
   const es = {}; Object.keys(E).forEach(id => { const c = cleanEntry(id, E[id]); if (c) es[id] = c; });
