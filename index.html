@@ -263,7 +263,7 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 110px}
 
 /* v11 grouped theme: gray canvas, white groups, blue accent, line icons */
 :root{--bg:#f2f2f7;--card:#ffffff;--card-lt:#ffffff;--sep:#c6c6c8;--sep-l:#e5e5ea;--accent:#007AFF;--on-accent:#ffffff;--tint:#e5f0ff;--tint-ink:#007AFF;--bar:#007AFF;--glass:rgba(242,242,247,.8);--glass-w:rgba(255,255,255,.8);--grp:#ffffff}
-@media (prefers-color-scheme:dark){:root{--bg:#000000;--card:#1c1c1e;--card-lt:#1c1c1e;--sep:#38383a;--sep-l:#2c2c2e;--accent:#0A84FF;--on-accent:#ffffff;--tint:#0a2a52;--tint-ink:#0A84FF;--bar:#0A84FF;--glass:rgba(0,0,0,.72);--glass-w:rgba(28,28,30,.8);--grp:#1c1c1e}}
+@media (prefers-color-scheme:dark){:root{--bg:#1c1c1e;--card:#000000;--card-lt:#000000;--sep:#38383a;--sep-l:#2c2c2e;--accent:#0A84FF;--on-accent:#ffffff;--tint:#0a2a52;--tint-ink:#0A84FF;--bar:#0A84FF;--glass:rgba(28,28,30,.72);--glass-w:rgba(44,44,46,.8);--grp:#000000}}
 .top{background:var(--glass);border-bottom:0}
 .top-in{grid-template-columns:1fr auto;height:44px;padding-inline:8px}
 .hl,.hb{display:flex;align-items:center}
@@ -332,6 +332,13 @@ body{overflow-x:clip}
 .cal-g .cal-d:nth-child(n+8){background-image:linear-gradient(var(--sep-l),var(--sep-l));background-size:100% .5px;background-repeat:no-repeat}
 .cal-d:nth-child(7n+1) .n,.cal-d:nth-child(7n) .n{color:var(--mute)}
 .cal-d.today .n{color:#fff}
+
+/* v14 */
+.cal-g .cal-d{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:54px;padding:0}
+.cal-g .cal-d .v{margin-top:-1px;line-height:1.1}
+.cal-g .cal-d.today .v{margin-top:2px}
+.day{padding-right:14px}
+.day b{font-size:17px;font-weight:700;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -420,7 +427,7 @@ function dayLabel(d){
   const [y, m, dd] = d.split('-').map(Number), dt = new Date(y, m - 1, dd);
   const t = new Date(); t.setHours(0, 0, 0, 0);
   const diff = Math.round((t - dt) / 864e5);
-  return diff === 0 ? '今日 · ' + dayShort(d) : diff === 1 ? '昨日 · ' + dayShort(d) : dayShort(d);
+  return diff === 0 ? '今日 · ' + dayShort(d) : dayShort(d);
 }
 let filterCat = null, filterDay = null;
 
