@@ -86,8 +86,8 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 110px}
 .cal-d .n{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);margin:0}
 .cal-d .v{position:absolute;left:0;right:0;bottom:4px;text-align:center}
 .cal-d.has{background:var(--card)}
-.calwrap{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .3s cubic-bezier(.4,0,.2,1),visibility 0s .3s}
-.calwrap.open{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .3s cubic-bezier(.4,0,.2,1),visibility 0s}
+.calwrap{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .2s cubic-bezier(.4,0,.2,1),visibility 0s .2s}
+.calwrap.open{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .2s cubic-bezier(.4,0,.2,1),visibility 0s}
 .calin{overflow:hidden;min-height:0}
 @media (prefers-reduced-motion:reduce){.calwrap,.calwrap.open{transition:none}}
 .lrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;text-align:left;padding:9px 6px;border-bottom:.5px solid var(--sep);transition:background-color .15s ease}
@@ -153,8 +153,8 @@ main{max-width:560px;margin-inline:auto;padding:12px 12px 110px}
 .cal-d.sel{box-shadow:none}
 
 /* v5 inline editor */
-.efwrap{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .28s cubic-bezier(.4,0,.2,1),visibility 0s .28s}
-.efwrap.open{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .28s cubic-bezier(.4,0,.2,1),visibility 0s}
+.efwrap{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .2s cubic-bezier(.4,0,.2,1),visibility 0s .2s}
+.efwrap.open{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .2s cubic-bezier(.4,0,.2,1),visibility 0s}
 .efin{overflow:hidden;min-height:0}
 .efwrap.solo{background:var(--card);border-radius:8px;margin-top:12px}
 .ef{padding:12px 18px 14px}
@@ -361,7 +361,7 @@ function openEntry(id){
 function closeEntry(anim){
   if (!openId || efClosing) return;
   const s = $('#efSlot'), fin = () => { openId = null; efReady = false; efClosing = false; render(); };
-  if (anim && s){ efClosing = true; s.classList.remove('open'); document.activeElement && document.activeElement.blur && document.activeElement.blur(); setTimeout(fin, 300); } else fin();
+  if (anim && s){ efClosing = true; s.classList.remove('open'); document.activeElement && document.activeElement.blur && document.activeElement.blur(); setTimeout(fin, 210); } else fin();
 }
 $('#fab').addEventListener('click', () => { if (openId === 'new') closeEntry(true); else openEntry(null); });
 function saveEntry(){
