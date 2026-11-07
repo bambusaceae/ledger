@@ -355,7 +355,7 @@ body{overflow-x:clip}
 .lrow .t,.lrow .a{line-height:22px}
 .ver{font-size:12px;font-weight:500;color:var(--mute);margin-left:6px}
 
-/* v44 themes: Apple (default), receipt, glass */
+/* themes: Apple (default), receipt */
 .gd,.cat-total{display:none}
 .sec{font-size:12px;color:var(--mute);margin:16px 4px 6px}
 .themes{display:flex;gap:10px}
@@ -370,9 +370,6 @@ body{overflow-x:clip}
 .tp-receipt{background:#cfcbc2}
 .tp-receipt::before{left:20%;right:20%;top:0;bottom:0;background:#fdfcf7;background-image:repeating-linear-gradient(180deg,transparent 0 9px,#cfcabb 9px 10px);background-size:100% 100%;opacity:1}
 .tp-receipt::after{left:28%;right:28%;top:22%;height:34%;background:repeating-linear-gradient(90deg,#26251f 0 2px,transparent 2px 4px,#26251f 4px 5px,transparent 5px 8px);opacity:.8}
-.tp-glass{background:radial-gradient(70% 50% at 20% 15%,#9fd4ff,transparent 70%),radial-gradient(60% 50% at 90% 30%,#ffc2e2,transparent 70%),radial-gradient(70% 55% at 30% 95%,#c8b6ff,transparent 70%),#eaf0ff}
-.tp-glass::before{left:12%;right:12%;top:16%;height:48%;border-radius:12px;background:rgba(255,255,255,.45);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}
-.tp-glass::after{left:50%;bottom:16%;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#fff;box-shadow:0 0 10px #8fa8ff}
 
 /* ---- receipt ---- */
 :root[data-th="receipt"]{--paper:#fdfcf7;--desk:#cfcbc2;--bg:var(--paper);--card:var(--paper);--card-lt:var(--paper);--grp:var(--paper);--glass:var(--paper);--glass-w:var(--paper);--ink:#26251f;--ink2:#34332c;--mute:#7a776b;--sep:#b9b4a3;--sep-l:#d6d2c3;--accent:#26251f;--on-accent:var(--paper);--tint:#efece0;--tint-ink:#26251f;--bar:#26251f;--fill:#26251f12;--scrim:rgba(0,0,0,.35);--danger:#b3261e;color-scheme:light;--f-body:ui-monospace,"SF Mono",Menlo,"Hiragino Sans","PingFang SC",monospace;background:var(--desk)}
@@ -431,47 +428,6 @@ body{overflow-x:clip}
 :root[data-th="receipt"] .pop .chip.on,:root[data-th="receipt"] .ef .chip.on{background:var(--ink);color:var(--paper)}
 :root[data-th="receipt"] .sheet{border-radius:0;border-top:2px dashed var(--ink)}
 :root[data-th="receipt"] main::after{content:"";display:block;height:34px;width:62%;margin:26px auto 0;background:repeating-linear-gradient(90deg,#26251f 0 2px,transparent 2px 4px,#26251f 4px 5px,transparent 5px 8px,#26251f 8px 11px,transparent 11px 12px)}
-
-/* ---- glass ---- */
-:root[data-th="glass"]{--ink:#14213d;--ink2:#14213dd0;--mute:#14213d8c;--sep:rgba(20,33,61,.18);--sep-l:rgba(20,33,61,.1);--bg:#dfe6ff;--grp:rgba(255,255,255,.42);--card:rgba(255,255,255,.42);--card-lt:rgba(255,255,255,.42);--accent:#4361ee;--on-accent:#fff;--tint:rgba(255,255,255,.5);--tint-ink:#4361ee;--bar:#4361ee;--fill:rgba(255,255,255,.4);--glass:rgba(255,255,255,.35);--glass-w:rgba(255,255,255,.8);--scrim:rgba(20,33,61,.3);--gb:rgba(255,255,255,.65);--gs:rgba(60,70,160,.16);--base:#eaf0ff;--b1:#9fd4ff;--b2:#ffc2e2;--b3:#c8b6ff;--b4:#b8f2e6;background:var(--base)}
-@media (prefers-color-scheme:dark){:root[data-th="glass"]{--ink:#f2f4ff;--ink2:#f2f4ffd0;--mute:#f2f4ff8c;--sep:rgba(255,255,255,.18);--sep-l:rgba(255,255,255,.1);--bg:#14143a;--grp:rgba(255,255,255,.08);--card:rgba(255,255,255,.08);--card-lt:rgba(255,255,255,.08);--accent:#9db0ff;--on-accent:#0b0b1e;--tint:rgba(255,255,255,.1);--tint-ink:#9db0ff;--bar:#9db0ff;--fill:rgba(255,255,255,.12);--glass:rgba(20,20,50,.4);--glass-w:rgba(30,30,70,.84);--scrim:rgba(0,0,10,.55);--gb:rgba(255,255,255,.16);--gs:rgba(0,0,0,.35);--base:#0a0a1c;--b1:#2b44c8;--b2:#a3216a;--b3:#6a2bc2;--b4:#0e7490}}
-:root[data-th="glass"] body{background:transparent}
-:root[data-th="glass"] body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(60% 40% at 12% 8%,var(--b1),transparent 70%),radial-gradient(55% 40% at 95% 24%,var(--b2),transparent 70%),radial-gradient(65% 45% at 25% 88%,var(--b3),transparent 70%),radial-gradient(55% 40% at 100% 95%,var(--b4),transparent 70%)}
-:root[data-th="glass"] .top{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;border:0}
-:root[data-th="glass"] .ttl{font-size:46px;font-weight:200;letter-spacing:-.035em}
-:root[data-th="glass"] .ttlrow .ib{width:32px;height:32px;margin-top:8px;border-radius:50%;background:var(--fill);box-shadow:inset 0 0 0 1px var(--gb);color:var(--ink)}
-:root[data-th="glass"] .ttlrow .ib:first-of-type{margin-left:12px}
-:root[data-th="glass"] .ttlrow .ib+.ib{margin-left:6px}
-:root[data-th="glass"] .ib{color:var(--ink)}
-:root[data-th="glass"] .lines,:root[data-th="glass"] .cats2,:root[data-th="glass"] .calwrap,:root[data-th="glass"] .efwrap.solo{background:var(--grp);-webkit-backdrop-filter:blur(24px) saturate(1.7);backdrop-filter:blur(24px) saturate(1.7);border-radius:22px;box-shadow:inset 0 0 0 1px var(--gb),0 10px 30px var(--gs)}
-:root[data-th="glass"] .lines{padding:2px 14px}
-:root[data-th="glass"] .lines .efwrap{margin-inline:-14px;background:transparent}
-:root[data-th="glass"] .cats2{padding:8px 8px}
-:root[data-th="glass"] .calwrap{width:auto;margin:10px 0 0;overflow:hidden}
-:root[data-th="glass"] .cal-h{padding:12px 4px 2px}
-:root[data-th="glass"] .cal-h span{font-weight:500;color:var(--mute);font-size:10.5px}
-:root[data-th="glass"] .cal-g{background:none;border:0;padding:0 4px 8px}
-:root[data-th="glass"] .cal-g .cal-d:nth-child(n+8){background-image:none}
-:root[data-th="glass"] .cal-g .cal-d{min-height:48px;padding-top:6px}
-:root[data-th="glass"] .cal-d .n{font-size:13.5px;line-height:24px;min-width:24px;height:24px;border-radius:12px}
-:root[data-th="glass"] .cal-d .v{display:none}
-:root[data-th="glass"] .gd{display:block;flex:none;width:calc(4px + 6px * var(--s));height:calc(4px + 6px * var(--s));margin-top:3px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px 1px var(--accent)}
-:root[data-th="glass"] .cal-d.today .n{background:linear-gradient(135deg,#6a8bff,#c06bff);color:#fff;box-shadow:0 0 14px rgba(120,120,255,.7)}
-:root[data-th="glass"] .cal-d.sel .n{box-shadow:inset 0 0 0 1.5px var(--accent)}
-:root[data-th="glass"] .cal-d.sel.today .n{box-shadow:0 0 14px rgba(120,120,255,.7)}
-:root[data-th="glass"] .ci,:root[data-th="glass"] .ri{width:28px;height:28px;border-radius:50%;background:var(--fill);box-shadow:inset 0 0 0 1px var(--gb);color:var(--accent)}
-:root[data-th="glass"] .ci svg,:root[data-th="glass"] .ri svg{width:17px;height:17px;stroke-width:1.1}
-:root[data-th="glass"] .lrow .t{padding-left:40px}
-:root[data-th="glass"] .lrow{padding:9px 6px 8.5px}
-:root[data-th="glass"] .day{font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--mute);margin:22px 0 8px 4px}
-:root[data-th="glass"] .day b{font-size:15px;font-weight:600;color:var(--ink2)}
-:root[data-th="glass"] .calbar button{color:var(--ink)}
-:root[data-th="glass"] .fab{background:var(--glass-w);color:var(--ink);-webkit-backdrop-filter:blur(18px) saturate(1.7);backdrop-filter:blur(18px) saturate(1.7);box-shadow:inset 0 0 0 1px var(--gb),0 10px 30px rgba(80,90,255,.35)}
-:root[data-th="glass"] .fbar button{background:var(--fill);color:var(--accent)}
-:root[data-th="glass"] .shop{background:var(--fill);color:var(--ink2)}
-:root[data-th="glass"] .ef .chip.on,:root[data-th="glass"] .pop .chip.on{background:var(--accent);color:var(--on-accent)}
-:root[data-th="glass"] .sheet{border-radius:26px 26px 0 0;box-shadow:inset 0 1px 0 var(--gb)}
-:root[data-th="glass"] .sheet .fld input{background:var(--fill)}
 </style>
 </head>
 <body>
@@ -501,7 +457,7 @@ body{overflow-x:clip}
 </div></div>
 
 <section class="sheet" id="setSheet" aria-label="設定">
-  <div class="sh-h"><h2>設定 <small class="ver">v44</small></h2><button class="ib" data-close aria-label="閉じる"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sh-h"><h2>設定 <small class="ver">v45</small></h2><button class="ib" data-close aria-label="閉じる"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="sec" style="margin-top:0">テーマ</div><div class="themes" id="themes"></div>
   <div class="sec">GitHub 同期</div>
   <label class="fld"><span>リポジトリ</span><input id="srepo" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="owner/repo"></label>
@@ -509,7 +465,7 @@ body{overflow-x:clip}
   <div class="acts"><button class="btn pri" id="ssave">保存して同期</button><button class="btn" id="syncNow">今すぐ同期</button></div>
   <div class="note-s" id="syncNote"></div>
   <p class="hint">記録はまずこの端末に保存され、リポジトリの data.json と同期されます。オンラインに戻ったときにも同期されます。</p>
-  <p class="hint" id="verLine">バージョン v44 · 2026-11-08</p>
+  <p class="hint" id="verLine">バージョン v45 · 2026-11-08</p>
 </section>
 
 <script>
@@ -522,7 +478,7 @@ const LS = {
 };
 const CATS = ['Eating', 'Drinking', 'Transport', 'Goods', 'Medical', 'Groceries', 'Other'];
 const LABELS = {Eating: '食事', Drinking: '飲み物', Transport: '交通', Goods: 'ショッピング', Medical: '医療', Groceries: '家用', Other: 'その他'};
-const THEMES = [['apple', 'Apple'], ['receipt', 'レシート'], ['glass', 'ガラス']];
+const THEMES = [['apple', 'Apple'], ['receipt', 'レシート']];
 let theme = LS.get('theme', 'apple'); if (!THEMES.some(t => t[0] === theme)) theme = 'apple';
 const applyTheme = () => document.documentElement.setAttribute('data-th', theme);
 applyTheme();
