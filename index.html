@@ -413,7 +413,6 @@ body{overflow-x:clip}
 :root[data-th="receipt"] .cal-d.today .n{color:var(--paper)}
 :root[data-th="receipt"] .day{margin:18px 0 4px;padding:6px 0 0;border-top:1px dashed var(--ink);font-size:14px;color:var(--ink);align-items:baseline}
 :root[data-th="receipt"] .day b{font-size:14px;font-weight:700;color:var(--ink)}
-:root[data-th="receipt"] .day b::before{content:"小計 ";font-size:11px;font-weight:400;color:var(--mute)}
 :root[data-th="receipt"] .lines{background:none;padding:0;border-radius:0}
 :root[data-th="receipt"] .lines .efwrap{margin-inline:0;background:var(--paper)}
 :root[data-th="receipt"] .lrow{border-bottom:0;padding:5px 0;background-position:0 20px}
@@ -545,7 +544,7 @@ body{overflow-x:clip}
 </div></div>
 
 <section class="sheet" id="setSheet" aria-label="設定">
-  <div class="sh-h"><h2>設定 <small class="ver">v50</small></h2><button class="ib" data-close aria-label="閉じる"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sh-h"><h2>設定 <small class="ver">v51</small></h2><button class="ib" data-close aria-label="閉じる"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="sec" style="margin-top:0">テーマ</div><div class="themes" id="themes"></div>
   <div class="sec">GitHub 同期</div>
   <label class="fld"><span>リポジトリ</span><input id="srepo" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="owner/repo"></label>
@@ -553,7 +552,7 @@ body{overflow-x:clip}
   <div class="acts"><button class="btn pri" id="ssave">保存して同期</button><button class="btn" id="syncNow">今すぐ同期</button></div>
   <div class="note-s" id="syncNote"></div>
   <p class="hint">記録はまずこの端末に保存され、リポジトリの data.json と同期されます。オンラインに戻ったときにも同期されます。</p>
-  <p class="hint" id="verLine">バージョン v50 · 2026-11-08</p>
+  <p class="hint" id="verLine">バージョン v51 · 2026-11-08</p>
 </section>
 
 <script>
@@ -661,7 +660,7 @@ function render(){
       if (open) h += '</div></section>';
       if (cur && wkOf(e.d) !== wkOf(cur)) h += '<div class="wk"></div>';
       cur = e.d; open = true;
-      h += `<section class="dg${e.d === today() ? ' today' : ''}"><div class="day"><span>${esc(dayLabel(e.d))}</span><em class="dm">${e.d === today() ? '今日 · ' : ''}${e.d.slice(5, 7)}/${e.d.slice(8)} ${WD[new Date(+e.d.slice(0, 4), +e.d.slice(5, 7) - 1, +e.d.slice(8)).getDay()]}</em><i class="dn">${+e.d.slice(8)}</i><i class="dw">${WD[new Date(+e.d.slice(0, 4), +e.d.slice(5, 7) - 1, +e.d.slice(8)).getDay()]}</i><b>${fmt(dayTot[e.d])}</b></div><div class="lines">`;
+      h += `<section class="dg${e.d === today() ? ' today' : ''}"><div class="day"><span>${esc(dayLabel(e.d))}</span><em class="dm">${e.d.slice(5, 7)}/${e.d.slice(8)} ${WD[new Date(+e.d.slice(0, 4), +e.d.slice(5, 7) - 1, +e.d.slice(8)).getDay()]}</em><i class="dn">${+e.d.slice(8)}</i><i class="dw">${WD[new Date(+e.d.slice(0, 4), +e.d.slice(5, 7) - 1, +e.d.slice(8)).getDay()]}</i><b>${fmt(dayTot[e.d])}</b></div><div class="lines">`;
     }
     h += rowHtml(e) + (openId === e.id ? efSlot(false) : '');
   });
