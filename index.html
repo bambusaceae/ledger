@@ -430,49 +430,80 @@ body{overflow-x:clip}
 :root[data-th="receipt"] main::after{content:"";display:block;height:34px;width:62%;margin:26px auto 0;background:repeating-linear-gradient(90deg,#26251f 0 2px,transparent 2px 4px,#26251f 4px 5px,transparent 5px 8px,#26251f 8px 11px,transparent 11px 12px)}
 
 /* ---- planner (手帳) ---- */
+.dn,.dw{display:none}
 .tp-planner{background:#fbf6ea radial-gradient(circle,#d9ccaa 1px,transparent 1.3px) 0 0/10px 10px}
 .tp-planner::before{left:14%;right:14%;top:14%;height:30%;background:#fff3b8;transform:rotate(-2deg);box-shadow:0 1px 2px #0003}
 .tp-planner::after{left:22%;bottom:16%;width:16px;height:16px;border-radius:50%;background:#ffd0e0;box-shadow:24px -4px 0 #cfe5ff,48px 2px 0 #cdeccf,inset 0 0 0 2px #fff}
-:root[data-th="planner"]{--paper:#fbf6ea;--dot:#d9ccaa;--mk:#ffe27a;--bg:var(--paper);--card:#fffdf6;--card-lt:#fffdf6;--grp:#fffdf6;--ink:#3d3a4b;--ink2:#524f63;--mute:#9a927f;--sep:#d8cdb4;--sep-l:#e8dfc9;--accent:#e2705a;--on-accent:#fff;--tint:#ffe7e0;--tint-ink:#c4503d;--bar:#e2705a;--fill:#3d3a4b10;--glass:#fffdf6e6;--glass-w:#fffdf6;--scrim:rgba(61,58,75,.35);--danger:#d64545;--note:#fff3b8;--tape1:#ffd3cb;--tape2:#d3e6ff;--tape3:#d6efd2;--f-body:"Hiragino Maru Gothic ProN","Hiragino Maru Gothic Pro","Arial Rounded MT Bold",ui-rounded,system-ui,sans-serif;background:var(--paper)}
-@media (prefers-color-scheme:dark){:root[data-th="planner"]{--paper:#26221d;--dot:#4a4337;--mk:#7a6420;--card:#332d26;--card-lt:#332d26;--grp:#332d26;--ink:#f1e9d8;--ink2:#d9cfba;--mute:#a39983;--sep:#4d463a;--sep-l:#3e382f;--accent:#f08a74;--on-accent:#26221d;--tint:#4a3731;--tint-ink:#f08a74;--fill:#f1e9d814;--glass:#332d26e6;--glass-w:#332d26;--scrim:rgba(0,0,0,.55);--note:#4d4425;--tape1:#6b3f3a;--tape2:#37506e;--tape3:#3f5f3d;color-scheme:dark}}
+:root[data-th="planner"]{--paper:#fbf6ea;--dot:#d9ccaa;--mk:#ffe27a;--ring:#8d8576;--sun:#e2705a;--sat:#4a78c2;--bg:var(--paper);--card:#fffdf6;--card-lt:#fffdf6;--grp:#fffdf6;--ink:#3d3a4b;--ink2:#524f63;--mute:#9a927f;--sep:#d8cdb4;--sep-l:#e8dfc9;--accent:#e2705a;--on-accent:#fff;--tint:#ffe7e0;--tint-ink:#c4503d;--bar:#e2705a;--fill:#3d3a4b10;--glass:#fffdf6e6;--glass-w:#fffdf6;--scrim:rgba(61,58,75,.35);--danger:#d64545;--note:#fff3b8;--tape1:#ffd3cb;--tape2:#d3e6ff;--tape3:#d6efd2;--f-body:"Hiragino Maru Gothic ProN","Hiragino Maru Gothic Pro","Arial Rounded MT Bold",ui-rounded,system-ui,sans-serif;background:var(--paper)}
+@media (prefers-color-scheme:dark){:root[data-th="planner"]{--paper:#26221d;--dot:#4a4337;--mk:#7a6420;--ring:#a39983;--sun:#f08a74;--sat:#8fb2ee;--card:#332d26;--card-lt:#332d26;--grp:#332d26;--ink:#f1e9d8;--ink2:#d9cfba;--mute:#a39983;--sep:#4d463a;--sep-l:#3e382f;--accent:#f08a74;--on-accent:#26221d;--tint:#4a3731;--tint-ink:#f08a74;--fill:#f1e9d814;--glass:#332d26e6;--glass-w:#332d26;--scrim:rgba(0,0,0,.55);--note:#4d4425;--tape1:#6b3f3a;--tape2:#37506e;--tape3:#3f5f3d;color-scheme:dark}}
 :root[data-th="planner"] body{background:var(--paper) radial-gradient(circle,var(--dot) 1px,transparent 1.3px) 0 0/18px 18px}
 :root[data-th="planner"] .top{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;border:0}
-:root[data-th="planner"] .ttl{display:inline-block;font-weight:800;letter-spacing:.01em;padding:0 6px;margin-left:-6px;background:linear-gradient(transparent 62%,var(--mk) 62%)}
-:root[data-th="planner"] .ttlrow .ib{width:32px;height:32px;margin-top:6px;border-radius:50%;background:var(--card);box-shadow:0 1px 2px #0003;color:var(--ink)}
+/* header: page strip, prev | month | next */
+:root[data-th="planner"] .ttlrow{justify-content:space-between;align-items:center;padding:0 0 10px;margin-bottom:4px;border-bottom:3px double var(--sep)}
+:root[data-th="planner"] #prev{order:-1}
+:root[data-th="planner"] #next{order:1}
+:root[data-th="planner"] .ttl{display:inline-block;margin:0;padding:0 8px;font-weight:800;font-size:30px;background:linear-gradient(transparent 62%,var(--mk) 62%)}
+:root[data-th="planner"] .ttlrow .ib{width:36px;height:36px;margin:0;border-radius:50%;background:var(--card);box-shadow:0 0 0 2px var(--paper),0 1px 3px #0003;color:var(--ink)}
 :root[data-th="planner"] .ib{color:var(--ink)}
-:root[data-th="planner"] .cats2{position:relative;background:var(--note);border-radius:3px 3px 8px 8px;padding:16px 10px 10px;margin:14px 0 6px;transform:rotate(-.5deg);box-shadow:0 2px 0 #0000000d,0 8px 14px #0000001f}
+:root[data-th="planner"] #setBtn{width:36px;height:36px;margin:4px 6px 0 0;background:var(--card);border-radius:50%;box-shadow:0 0 0 2px var(--paper),0 1px 3px #0003}
+/* summary: sticker sheet on a sticky note */
+:root[data-th="planner"] .cats2{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 4px;background:var(--note);border-radius:3px 3px 8px 8px;padding:22px 8px 12px;margin:16px 0 6px;transform:rotate(-.5deg);box-shadow:0 2px 0 #0000000d,0 8px 14px #0000001f}
 :root[data-th="planner"] .cats2::before{content:"";position:absolute;left:50%;top:-9px;width:72px;height:18px;margin-left:-36px;transform:rotate(2.5deg);background:repeating-linear-gradient(45deg,var(--tape1) 0 6px,#ffffff59 6px 12px);opacity:.92;clip-path:polygon(0 0,100% 0,97% 50%,100% 100%,0 100%,3% 50%)}
-:root[data-th="planner"] .catr .nm{color:var(--ink)}
-:root[data-th="planner"] .catr .am{font-weight:700}
-:root[data-th="planner"] .catr.sel{box-shadow:none;background:linear-gradient(transparent 58%,var(--mk) 58%)}
+:root[data-th="planner"] .catr{flex-direction:column;align-items:center;justify-content:flex-start;gap:3px;padding:2px 0;text-align:center;border-radius:8px}
+:root[data-th="planner"] .catr .nm{flex:none;max-width:100%;font-size:11px;font-weight:700;color:var(--ink2)}
+:root[data-th="planner"] .catr .am{font-size:14px;font-weight:800;color:var(--ink)}
+:root[data-th="planner"] .catr.sel{box-shadow:none;background:none}
+:root[data-th="planner"] .catr.sel .am{background:linear-gradient(transparent 58%,var(--mk) 58%);padding:0 4px}
+/* category stickers */
 :root[data-th="planner"] .ci,:root[data-th="planner"] .ri{width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#e4e0d6;color:#6b6455;box-shadow:0 0 0 2px #fff,0 1px 3px #0003}
+:root[data-th="planner"] .ci{width:42px;height:42px}
 :root[data-th="planner"] .ci svg,:root[data-th="planner"] .ri svg{width:18px;height:18px;stroke-width:2}
+:root[data-th="planner"] .ci svg{width:23px;height:23px}
 :root[data-th="planner"] :is(.ci,.ri):has(svg[data-c="Eating"]){background:#ffe3a3;color:#a86a00}
 :root[data-th="planner"] :is(.ci,.ri):has(svg[data-c="Drinking"]){background:#ffd0e0;color:#c2457a}
 :root[data-th="planner"] :is(.ci,.ri):has(svg[data-c="Transport"]){background:#cfe5ff;color:#2a65b5}
 :root[data-th="planner"] :is(.ci,.ri):has(svg[data-c="Goods"]){background:#e3d4ff;color:#6a45b8}
 :root[data-th="planner"] :is(.ci,.ri):has(svg[data-c="Medical"]){background:#ffd2cc;color:#c2412f}
 :root[data-th="planner"] :is(.ci,.ri):has(svg[data-c="Groceries"]){background:#cdeccf;color:#2f7d3a}
+:root[data-th="planner"] .catr:nth-child(odd) .ci{transform:rotate(-6deg)}
+:root[data-th="planner"] .catr:nth-child(even) .ci{transform:rotate(5deg)}
 :root[data-th="planner"] .ri{position:absolute;left:0;top:50%;margin-top:-15px}
 :root[data-th="planner"] .lrow:nth-child(odd) .ri{transform:rotate(-7deg)}
 :root[data-th="planner"] .lrow:nth-child(even) .ri{transform:rotate(6deg)}
-:root[data-th="planner"] .calwrap{width:auto;margin:12px 0 0;background:var(--card);border-radius:12px;box-shadow:0 2px 0 #0000000d,0 8px 14px #0000001a;overflow:hidden}
-:root[data-th="planner"] .cal-h{padding:10px 4px 2px}
-:root[data-th="planner"] .cal-h span{font-weight:700;font-size:11px;color:var(--mute)}
-:root[data-th="planner"] .cal-g{background:none;border:0;padding:0 4px 6px}
-:root[data-th="planner"] .cal-g .cal-d:nth-child(n+8){background-image:radial-gradient(circle at 1px 1px,var(--sep) .9px,transparent 1.1px);background-size:6px 2px;background-repeat:repeat-x;background-position:0 0}
-:root[data-th="planner"] .cal-d .n{font-weight:700;border-radius:50%;min-width:24px;height:24px;line-height:24px}
-:root[data-th="planner"] .cal-d .v{color:var(--ink2);font-weight:700;background:linear-gradient(transparent 55%,var(--mk) 55%);padding:0 2px}
+/* calendar: month spread with spiral binding */
+:root[data-th="planner"] .calwrap{width:auto;margin:14px 0 0;background:var(--card);border-radius:10px;box-shadow:0 2px 0 #0000000d,0 8px 14px #0000001a;overflow:hidden}
+:root[data-th="planner"] .calin::before{content:"";display:block;height:18px;background:radial-gradient(circle at 50% 0,var(--paper) 0 5px,transparent 5.5px) 0 5px/20px 18px repeat-x,linear-gradient(90deg,transparent 8px,var(--ring) 8px 11px,transparent 11px) 0 0/20px 12px repeat-x}
+:root[data-th="planner"] .cal-h{padding:6px 6px 4px;gap:3px}
+:root[data-th="planner"] .cal-h span{font-weight:800;font-size:11px;color:var(--ink2);background:var(--fill);border-radius:6px;padding:3px 0}
+:root[data-th="planner"] .cal-h span:first-child{color:var(--sun)}
+:root[data-th="planner"] .cal-h span:last-child{color:var(--sat)}
+:root[data-th="planner"] .cal-g{background:none;border:0;padding:0 6px 8px;gap:0}
+:root[data-th="planner"] .cal-g .cal-d,:root[data-th="planner"] .cal-g .cal-d:nth-child(n+8){background:none;background-image:none;min-height:60px;padding:4px 3px;border-radius:0;box-shadow:inset 0 0 0 .5px var(--sep);text-align:left}
+:root[data-th="planner"] .cal-g .cal-d.blank{box-shadow:none}
+:root[data-th="planner"] .cal-d .n{position:static;display:block;transform:none;margin:0;min-width:22px;height:22px;line-height:22px;font-size:13px;font-weight:800;text-align:center;border-radius:50%;color:var(--ink)}
+:root[data-th="planner"] .cal-d:nth-child(7n+1) .n{color:var(--sun)}
+:root[data-th="planner"] .cal-d:nth-child(7n) .n{color:var(--sat)}
+:root[data-th="planner"] .cal-d .v{position:absolute;right:3px;bottom:4px;font-size:10px;font-weight:800;color:var(--ink2);background:linear-gradient(transparent 55%,var(--mk) 55%);padding:0 2px}
 :root[data-th="planner"] .cal-d.today .n{background:none;color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent);border-radius:52% 48% 55% 45%/48% 55% 45% 52%}
-:root[data-th="planner"] .cal-d.sel .n{background:var(--mk);color:var(--ink);box-shadow:none}
-:root[data-th="planner"] .cal-d.sel.today .n{background:var(--mk);box-shadow:inset 0 0 0 2px var(--accent)}
-:root[data-th="planner"] .day{margin:22px 0 8px;padding:0;align-items:center;color:var(--ink)}
-:root[data-th="planner"] .day span{display:inline-block;padding:4px 16px;font-weight:700;font-size:13px;color:var(--ink);background:repeating-linear-gradient(45deg,var(--tape1) 0 7px,#ffffff59 7px 14px);transform:rotate(-1.2deg);clip-path:polygon(0 0,100% 0,98% 50%,100% 100%,0 100%,2% 50%)}
-:root[data-th="planner"] .day:nth-of-type(3n+2) span{background:repeating-linear-gradient(45deg,var(--tape2) 0 7px,#ffffff59 7px 14px);transform:rotate(.8deg)}
-:root[data-th="planner"] .day:nth-of-type(3n) span{background:repeating-linear-gradient(45deg,var(--tape3) 0 7px,#ffffff59 7px 14px);transform:rotate(-.5deg)}
-:root[data-th="planner"] .day b{font-size:15px;font-weight:800;color:var(--ink);background:linear-gradient(transparent 60%,var(--mk) 60%);padding:0 3px}
-:root[data-th="planner"] .lines{background:var(--card);border-radius:12px;padding:2px 14px;box-shadow:0 2px 0 #0000000d,0 6px 12px #00000014}
-:root[data-th="planner"] .lines .efwrap{margin-inline:-14px}
+:root[data-th="planner"] .cal-d.sel{background:linear-gradient(var(--mk),var(--mk));background-blend-mode:normal;box-shadow:inset 0 0 0 .5px var(--sep)}
+:root[data-th="planner"] .cal-d.sel .n{color:var(--ink)}
+:root[data-th="planner"] .cal-d.sel .v{background:none}
+/* day groups: diary layout, date tab on the left */
+:root[data-th="planner"] .dg{display:grid;grid-template-columns:56px minmax(0,1fr);column-gap:10px;align-items:start;margin-top:20px}
+:root[data-th="planner"] .day{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;margin:0;padding:15px 2px 8px;background:var(--card);border-radius:8px;box-shadow:0 2px 0 #0000000d,0 6px 12px #00000014;transform:rotate(-1.5deg)}
+:root[data-th="planner"] .dg:nth-of-type(even) .day{transform:rotate(1.2deg)}
+:root[data-th="planner"] .day::before{content:"";position:absolute;left:50%;top:-6px;width:34px;height:12px;margin-left:-17px;background:repeating-linear-gradient(45deg,var(--tape1) 0 5px,#ffffff59 5px 10px);clip-path:polygon(0 0,100% 0,95% 50%,100% 100%,0 100%,5% 50%);opacity:.95}
+:root[data-th="planner"] .dg:nth-of-type(3n+2) .day::before{background:repeating-linear-gradient(45deg,var(--tape2) 0 5px,#ffffff59 5px 10px)}
+:root[data-th="planner"] .dg:nth-of-type(3n) .day::before{background:repeating-linear-gradient(45deg,var(--tape3) 0 5px,#ffffff59 5px 10px)}
+:root[data-th="planner"] .day span{display:none}
+:root[data-th="planner"] .dn,:root[data-th="planner"] .dw{display:block;font-style:normal}
+:root[data-th="planner"] .dn{font-size:30px;line-height:34px;font-weight:800;color:var(--ink);min-width:38px;text-align:center;border-radius:50%}
+:root[data-th="planner"] .dw{font-size:11px;font-weight:800;color:var(--mute)}
+:root[data-th="planner"] .dw::after{content:"曜"}
+:root[data-th="planner"] .dg.today .dn{color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent);border-radius:52% 48% 55% 45%/48% 55% 45% 52%}
+:root[data-th="planner"] .day b{margin-top:4px;font-size:11px;font-weight:800;color:var(--ink);background:linear-gradient(transparent 58%,var(--mk) 58%);padding:0 3px}
+:root[data-th="planner"] .lines{background:var(--card);border-radius:12px;padding:2px 12px;box-shadow:0 2px 0 #0000000d,0 6px 12px #00000014}
+:root[data-th="planner"] .lines .efwrap{margin-inline:-12px}
 :root[data-th="planner"] .lrow{padding:9px 6px 8.5px;border-bottom:0;background-image:radial-gradient(circle at 1px 1px,var(--sep) .9px,transparent 1.1px);background-size:6px 2px;background-repeat:repeat-x;background-position:0 100%}
 :root[data-th="planner"] .lrow:last-child{background-image:none}
 :root[data-th="planner"] .lrow .t{padding-left:40px}
@@ -512,7 +543,7 @@ body{overflow-x:clip}
 </div></div>
 
 <section class="sheet" id="setSheet" aria-label="設定">
-  <div class="sh-h"><h2>設定 <small class="ver">v47</small></h2><button class="ib" data-close aria-label="閉じる"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sh-h"><h2>設定 <small class="ver">v48</small></h2><button class="ib" data-close aria-label="閉じる"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="sec" style="margin-top:0">テーマ</div><div class="themes" id="themes"></div>
   <div class="sec">GitHub 同期</div>
   <label class="fld"><span>リポジトリ</span><input id="srepo" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="owner/repo"></label>
@@ -520,7 +551,7 @@ body{overflow-x:clip}
   <div class="acts"><button class="btn pri" id="ssave">保存して同期</button><button class="btn" id="syncNow">今すぐ同期</button></div>
   <div class="note-s" id="syncNote"></div>
   <p class="hint">記録はまずこの端末に保存され、リポジトリの data.json と同期されます。オンラインに戻ったときにも同期されます。</p>
-  <p class="hint" id="verLine">バージョン v47 · 2026-11-08</p>
+  <p class="hint" id="verLine">バージョン v48 · 2026-11-08</p>
 </section>
 
 <script>
@@ -624,13 +655,13 @@ function render(){
   const dayTot = {}; list.forEach(e => { dayTot[e.d] = (dayTot[e.d] || 0) + e.a; });
   list.forEach(e => {
     if (e.d !== cur){
-      if (open) h += '</div>';
+      if (open) h += '</div></section>';
       cur = e.d; open = true;
-      h += `<div class="day"><span>${esc(dayLabel(e.d))}</span><b>${fmt(dayTot[e.d])}</b></div><div class="lines">`;
+      h += `<section class="dg${e.d === today() ? ' today' : ''}"><div class="day"><span>${esc(dayLabel(e.d))}</span><i class="dn">${+e.d.slice(8)}</i><i class="dw">${WD[new Date(+e.d.slice(0, 4), +e.d.slice(5, 7) - 1, +e.d.slice(8)).getDay()]}</i><b>${fmt(dayTot[e.d])}</b></div><div class="lines">`;
     }
     h += rowHtml(e) + (openId === e.id ? efSlot(false) : '');
   });
-  if (open) h += '</div>';
+  if (open) h += '</div></section>';
   $('#main').innerHTML = h;
   const slot = $('#efSlot');
   if (slot){
