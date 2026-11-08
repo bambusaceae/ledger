@@ -545,7 +545,7 @@ body{overflow-x:clip}
 </div></div>
 
 <section class="sheet" id="setSheet" aria-label="設定">
-  <div class="sh-h"><h2>設定 <small class="ver">v49</small></h2><button class="ib" data-close aria-label="閉じる"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sh-h"><h2>設定 <small class="ver">v50</small></h2><button class="ib" data-close aria-label="閉じる"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="sec" style="margin-top:0">テーマ</div><div class="themes" id="themes"></div>
   <div class="sec">GitHub 同期</div>
   <label class="fld"><span>リポジトリ</span><input id="srepo" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="owner/repo"></label>
@@ -553,7 +553,7 @@ body{overflow-x:clip}
   <div class="acts"><button class="btn pri" id="ssave">保存して同期</button><button class="btn" id="syncNow">今すぐ同期</button></div>
   <div class="note-s" id="syncNote"></div>
   <p class="hint">記録はまずこの端末に保存され、リポジトリの data.json と同期されます。オンラインに戻ったときにも同期されます。</p>
-  <p class="hint" id="verLine">バージョン v49 · 2026-11-08</p>
+  <p class="hint" id="verLine">バージョン v50 · 2026-11-08</p>
 </section>
 
 <script>
@@ -614,7 +614,7 @@ function dayLabel(d){
   const diff = Math.round((t - dt) / 864e5);
   return diff === 0 ? '今日 · ' + dayShort(d) : dayShort(d);
 }
-const wkOf = d => { const [y, m, dd] = d.split('-').map(Number), dt = new Date(y, m - 1, dd); dt.setDate(dt.getDate() - dt.getDay()); return dstr(dt); };
+const wkOf = d => { const [y, m, dd] = d.split('-').map(Number), dt = new Date(y, m - 1, dd); dt.setDate(dt.getDate() - (dt.getDay() + 6) % 7); return dstr(dt); };
 let filterCat = null, filterDay = null;
 
 /* ---------- render ---------- */
